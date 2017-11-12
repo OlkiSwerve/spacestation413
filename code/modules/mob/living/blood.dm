@@ -197,7 +197,7 @@
 mob/living/carbon/human/get_blood_data(blood_id)
 	var/color
 	if((blood_id == "blood") && (dna.species.has_castes))
-		color = get_color_from_caste(troll_caste)
+		color = get_color_from_caste(dna.features["troll_caste"])
 	return ..(blood_id,color)
 
 //get the id of the substance this mob use as blood.
@@ -332,7 +332,7 @@ mob/living/carbon/human/get_blood_data(blood_id)
 /mob/living/carbon/human/add_splatter_floor(turf/T, small_drip)
 	if(!(NOBLOOD in dna.species.species_traits))
 		if(dna.species.has_castes)
-			..(blood_caste=troll_caste)
+			..(blood_caste=dna.features["troll_caste"])
 		else
 			..()
 

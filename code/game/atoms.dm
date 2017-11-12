@@ -361,7 +361,7 @@ mob/living/carbon/human/get_blood_dna_list()
 		blood_dna[dna.unique_enzymes] = dna.blood_type
 		blood_dna["color"]=""
 		if(dna.species.has_castes)
-			switch(troll_caste)
+			switch(dna.features["troll_caste"])
 				if("burgundy")
 					blood_dna["color"] = "r"
 				if("brown")
