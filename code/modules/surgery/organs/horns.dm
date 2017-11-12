@@ -7,9 +7,16 @@
 
 /obj/item/organ/horns/troll
 	name = "troll horns"
-	icon = 'icons/mob/troll_horns.dmi'
 	var/horn_type = "Nubby"
-	icon_state = "nubby"
+
+/obj/item/organ/horns/troll/New(var/location)
+	..()
+	update_icon()
+
+/obj/item/organ/horns/troll/proc/update_icon()
+	var/S = GLOB.troll_horns_list[horn_type]
+	icon = S.icon
+	icon_state = S.icon_state
 
 /obj/item/organ/horns/troll/Insert(mob/living/carbon/human/H, special = 0, drop_if_replaced = TRUE)
 	..()
@@ -19,6 +26,6 @@
 /obj/item/organ/horns/troll/Remove(mob/living/carbon/human/H,  special = 0)
 	..()
 	horn_type = H.dna.features["horns_troll"]
-	icon_state = horn_type
+	update_icon()
 	H.dna.features["horns_troll"] = "None"
 	H.update_hair()
