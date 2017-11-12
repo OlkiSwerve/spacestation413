@@ -19,5 +19,6 @@
 /obj/item/organ/horns/troll/Remove(mob/living/carbon/human/H,  special = 0)
 	..()
 	horn_type = H.dna.features["horns_troll"]
+	icon_state = horn_type
 	H.dna.features["horns_troll"] = "None"
 	H.update_hair()
