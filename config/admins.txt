@@ -12,3 +12,5 @@ olkiswerve = Game Master
 Putnam = Coder
 Dickle Picken = Game Admin
 Difarem = Coder
+
+Serpentarium = Game Master

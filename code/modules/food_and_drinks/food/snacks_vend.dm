@@ -89,3 +89,13 @@
 	filling_color = "#F5F5DC"
 	tastes = list("sweetness" = 3, "cake" = 1)
 	foodtype = GRAIN | FRUIT | VEGETABLES
+	
+/obj/item/reagent_containers/food/snacks/gushers
+	name = "fruit gushers"
+	icon_state = "gushers"
+	desc = "These gushers come in Massive Tropical Brain Hemorrhage flavor." //C     O     N     S     U      M     E
+	trash = /obj/item/trash/gushers
+	filling_color = "#6A83FF"
+	list_reagents = list("gusher" = 20)
+	tastes = list("sweetness" = 1)
+	foodtype = FRUIT | JUNKFOOD | SUGAR

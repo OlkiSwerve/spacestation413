@@ -200,6 +200,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 			newname = C.prefs.custom_names[role]
 		else
 			switch(role)
+				if("human")
+					newname = random_unique_name(gender)
 				if("clown")
 					newname = pick(GLOB.clown_names)
 				if("mime")
@@ -506,6 +508,7 @@ Turf and target are separate in case you want to teleport some distance from a t
 /*
 	Gets all contents of contents and returns them all in a list.
 */
+
 /atom/proc/GetAllContents()
 	var/list/processing_list = list(src)
 	var/list/assembled = list()
@@ -514,8 +517,21 @@ Turf and target are separate in case you want to teleport some distance from a t
 		processing_list.Cut(1, 2)
 		//Byond does not allow things to be in multiple contents, or double parent-child hierarchies, so only += is needed
 		//This is also why we don't need to check against assembled as we go along
-		processing_list += A.contents 
+		processing_list += A.contents
 		assembled += A
+	return assembled
+
+/atom/proc/GetAllContentsIgnoring(list/ignore_typecache)
+	if(!ignore_typecache)
+		return GetAllContents()
+	var/list/processing = list(src)
+	var/list/assembled = list()
+	while(processing.len)
+		var/atom/A = processing[1]
+		processing.Cut(1,2)
+		if(!ignore_typecache[A.type])
+			processing += A.contents
+			assembled += A
 	return assembled
 
 //Step-towards method of determining whether one atom can see another. Similar to viewers()
@@ -1411,3 +1427,75 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 //checks if a turf is in the planet z list.
 /proc/turf_z_is_planet(turf/T)
 	return GLOB.z_is_planet["[T.z]"]
+
+
+//same as do_mob except for movables and it allows both to drift and doesn't draw progressbar
+/proc/do_atom(atom/movable/user , atom/movable/target, time = 30, uninterruptible = 0,datum/callback/extra_checks = null)
+	if(!user || !target)
+		return TRUE
+	var/user_loc = user.loc
+
+	var/drifting = FALSE
+	if(!user.Process_Spacemove(0) && user.inertia_dir)
+		drifting = TRUE
+
+	var/target_drifting = FALSE
+	if(!target.Process_Spacemove(0) && target.inertia_dir)
+		target_drifting = TRUE
+
+	var/target_loc = target.loc
+
+	var/endtime = world.time+time
+//	var/starttime = world.time
+	. = TRUE
+	while (world.time < endtime)
+		stoplag(1)
+		if(QDELETED(user) || QDELETED(target))
+			. = 0
+			break
+		if(uninterruptible)
+			continue
+
+		if(drifting && !user.inertia_dir)
+			drifting = FALSE
+			user_loc = user.loc
+
+		if(target_drifting && !target.inertia_dir)
+			target_drifting = FALSE
+			target_loc = target.loc
+
+		if((!drifting && user.loc != user_loc) || (!target_drifting && target.loc != target_loc) || (extra_checks && !extra_checks.Invoke()))
+			. = FALSE
+			break
+
+//returns a GUID like identifier (using a mostly made up record format)
+//guids are not on their own suitable for access or security tokens, as most of their bits are predictable.
+//	(But may make a nice salt to one)
+/proc/GUID()
+	var/const/GUID_VERSION = "b"
+	var/const/GUID_VARIANT = "d"
+	var/node_id = copytext(md5("[rand()*rand(1,9999999)][world.name][world.hub][world.hub_password][world.internet_address][world.address][world.contents.len][world.status][world.port][rand()*rand(1,9999999)]"), 1, 13)
+
+	var/time_high = "[num2hex(text2num(time2text(world.realtime,"YYYY")), 2)][num2hex(world.realtime, 6)]"
+
+	var/time_mid = num2hex(world.timeofday, 4)
+
+	var/time_low = num2hex(world.time, 3)
+
+	var/time_clock = num2hex(TICK_DELTA_TO_MS(world.tick_usage), 3)
+
+	return "{[time_high]-[time_mid]-[GUID_VERSION][time_low]-[GUID_VARIANT][time_clock]-[node_id]}"
+
+// \ref behaviour got changed in 512 so this is necesary to replicate old behaviour.
+// If it ever becomes necesary to get a more performant REF(), this lies here in wait
+// #define REF(thing) (thing && istype(thing, /datum) && thing:use_tag && thing:tag ? "[thing:tag]" : "\ref[thing]")
+/proc/REF(input)
+	if(istype(input, /datum))
+		var/datum/thing = input
+		if(thing.use_tag)
+			if(!thing.tag)
+				WARNING("A ref was requested of an object with use_tag set but no tag: [thing]")
+				thing.use_tag = FALSE
+			else
+				return "\[[url_encode(thing.tag)]\]"
+	return "\ref[input]"

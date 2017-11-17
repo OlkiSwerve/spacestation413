@@ -80,3 +80,7 @@
 	visible_message("[src] fuses into a diamond! Someone wasn't so naughty after all...")
 	new /obj/item/ore/diamond(loc)
 	qdel(src)
+	
+/obj/item/trash/gushers
+	name = "fruit gushers"
+	icon_state = "gushers"
