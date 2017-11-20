@@ -58,7 +58,7 @@
 		playsound(src, 'sound/effects/death.ogg', 150, FALSE)
 	if(mind)
 		mind.store_memory("Time of death: [tod]", 0)
-	GLOB.living_mob_list -= src
+	GLOB.alive_mob_list -= src
 	if(!gibbed)
 		GLOB.dead_mob_list += src
 	set_drugginess(0)

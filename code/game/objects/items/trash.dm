@@ -82,5 +82,37 @@
 	qdel(src)
 	
 /obj/item/trash/gushers
-	name = "fruit gushers"
+	name = "tropical fruit gushers"
 	icon_state = "gushers"
+
+/obj/item/trash/gushersphlegm
+	name = "hellacious fruit gushers"
+	icon_state = "gushersphlegm"
+
+/obj/item/trash/gushersblack
+	name = "black fruit gushers"
+	icon_state = "gushersblack"
+
+/obj/item/trash/gusherssyndie
+	name = "tangerine fruit gushers"
+	icon_state = "gusherssyndie"
+
+/obj/item/trash/gushersdiabetic
+	name = "sugary fruit gushers"
+	icon_state = "gushersdiabetic"
+
+/obj/item/trash/gusherscherry
+	name = "cherry fruit gushers"
+	icon_state = "gusherscherry"
+
+/obj/item/trash/gusherscitrus
+	name = "citrus fruit gushers"
+	icon_state = "gusherscitrus"
+
+/obj/item/trash/gusherskiwi
+	name = "kiwi fruit gushers"
+	icon_state = "gusherskiwi"
+
+/obj/item/trash/gushersstrawberry
+	name = "strawberry fruit gushers"
+	icon_state = "gushersstrawberry"

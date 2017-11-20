@@ -1230,6 +1230,35 @@
 					/obj/item/vending_refill/cigarette)
 	crate_name = "cigarette supply crate"
 
+/datum/supply_pack/organic/gushers
+	name = "C O N S U M E"
+	cost = 10000
+	contraband = TRUE
+	contains = list(/obj/item/reagent_containers/food/snacks/gushers,
+					/obj/item/reagent_containers/food/snacks/gushers,
+					/obj/item/reagent_containers/food/snacks/gushers,
+					/obj/item/reagent_containers/food/snacks/gushersphlegm,
+					/obj/item/reagent_containers/food/snacks/gushersphlegm,
+					/obj/item/reagent_containers/food/snacks/gushersphlegm,
+					/obj/item/reagent_containers/food/snacks/gushersblack,
+					/obj/item/reagent_containers/food/snacks/gushersblack,
+					/obj/item/reagent_containers/food/snacks/gushersblack,
+					/obj/item/reagent_containers/food/snacks/gushersdiabetic,
+					/obj/item/reagent_containers/food/snacks/gushersdiabetic,
+					/obj/item/reagent_containers/food/snacks/gushersdiabetic,
+					/obj/item/reagent_containers/food/snacks/gusherscherry,
+					/obj/item/reagent_containers/food/snacks/gusherscherry,
+					/obj/item/reagent_containers/food/snacks/gusherscherry,
+					/obj/item/reagent_containers/food/snacks/gusherscitrus,
+					/obj/item/reagent_containers/food/snacks/gusherscitrus,
+					/obj/item/reagent_containers/food/snacks/gusherscitrus,
+					/obj/item/reagent_containers/food/snacks/gusherskiwi,
+					/obj/item/reagent_containers/food/snacks/gusherskiwi,
+					/obj/item/reagent_containers/food/snacks/gusherskiwi,
+					/obj/item/reagent_containers/food/snacks/gushersstrawberry,
+					/obj/item/reagent_containers/food/snacks/gushersstrawberry,
+					/obj/item/reagent_containers/food/snacks/gushersstrawberry)
+
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Materials ///////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////

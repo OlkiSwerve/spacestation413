@@ -47,6 +47,15 @@
 			/obj/item/reagent_containers/food/snacks/grown/bluecherries = list("bluecherryjelly" = 0),
 			/obj/item/reagent_containers/food/snacks/egg = list("eggyolk" = -5),
 			/obj/item/reagent_containers/food/snacks/deadmouse = list ("blood" = 20, "gibs" = 5), // You monster
+			/obj/item/reagent_containers/food/snacks/gushers = list("gusher" = 20),
+			/obj/item/reagent_containers/food/snacks/gushersphlegm = list("gusherphlegm" = 20),
+			/obj/item/reagent_containers/food/snacks/gushersblack = list("gusherblack" = 20),
+			/obj/item/reagent_containers/food/snacks/gusherssyndie = list("gushersyndie" = 20),
+			/obj/item/reagent_containers/food/snacks/gushersdiabetic = list("gusherdiabetic" = 20),
+			/obj/item/reagent_containers/food/snacks/gusherscherry = list("gushercherry" = 20),
+			/obj/item/reagent_containers/food/snacks/gusherscitrus = list("gushercitrus" = 20),
+			/obj/item/reagent_containers/food/snacks/gusherskiwi = list("gusherkiwi" = 20),
+			/obj/item/reagent_containers/food/snacks/gushersstrawberry = list("gusherstrawberry" = 20),
 			//Grinder stuff, but only if dry
 			/obj/item/reagent_containers/food/snacks/grown/coffee/robusta = list("coffeepowder" = 0, "morphine" = 0),
 			/obj/item/reagent_containers/food/snacks/grown/coffee = list("coffeepowder" = 0),
