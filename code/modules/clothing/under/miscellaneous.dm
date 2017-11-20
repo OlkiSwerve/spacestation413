@@ -730,3 +730,19 @@
 	fitted = NO_FEMALE_UNIFORM
 	can_adjust = FALSE
 	resistance_flags = NONE
+
+/obj/item/clothing/under/prospit
+	name = "prospit pj's"
+	desc = "A pair of prospitian pajamas, from one of Skaia's moons."
+	icon_state = "prospit"
+	item_state = "prospit"
+	item_color = "prospit"
+	can_adjust = FALSE
+
+/obj/item/clothing/under/derse
+	name = "derse pj's"
+	desc = "A pair of dersite pyjamas, from one of Skaia's moons."
+	icon_state = "derse"
+	item_state = "derse"
+	item_color = "derse"
+	can_adjust = FALSE
