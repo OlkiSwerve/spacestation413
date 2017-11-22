@@ -368,6 +368,7 @@ LAW_WEIGHT drone,3
 LAW_WEIGHT liveandletlive,3
 LAW_WEIGHT peacekeeper,3
 LAW_WEIGHT reporter,4
+LAW_WEIGHT richter,4
 
 ## Bad idea laws. Probably shouldn't enable these
 LAW_WEIGHT syndie,0
