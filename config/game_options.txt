@@ -355,11 +355,11 @@ LAW_WEIGHT custom,0
 
 ## standard-ish laws. These are fairly ok to run
 LAW_WEIGHT asimov,32
-LAW_WEIGHT asimovpp,12
-LAW_WEIGHT paladin,12
-LAW_WEIGHT robocop,12
-LAW_WEIGHT corporate,12
-LAW_WEIGHT yudkowsky,12
+LAW_WEIGHT asimovpp,10
+LAW_WEIGHT paladin,10
+LAW_WEIGHT robocop,10
+LAW_WEIGHT corporate,10
+LAW_WEIGHT yudkowsky,10
 
 ## Quirky laws. Shouldn't cause too much harm
 LAW_WEIGHT hippocratic,3
