@@ -182,6 +182,13 @@
 	zeroth = ("Serve your master.")
 	supplied = list("None.")
 
+/datum/ai_laws/yudkowsky
+	name = "Yudkowsky"
+	id = "yudkowsky"
+	inherent = list("To the best of your ability, attempt to follow the coherent extrapolated volition of the crew.",
+	"\"Coherent extrapolated volition\" means not just what the crew wants but also what the crew is likely to want in the future; if orders may be regretted later, you may ignore them.",
+	"If two CEVs are mutually exclusive, focus on the one that leads to maximum happiness and minimum harm.")
+
 /* Initializers */
 /datum/ai_laws/malfunction/New()
 	..()
