@@ -734,7 +734,8 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	products = list(/obj/item/reagent_containers/food/drinks/soda_cans/cola = 10, /obj/item/reagent_containers/food/drinks/soda_cans/space_mountain_wind = 10,
 					/obj/item/reagent_containers/food/drinks/soda_cans/dr_gibb = 10, /obj/item/reagent_containers/food/drinks/soda_cans/starkist = 10,
 					/obj/item/reagent_containers/food/drinks/soda_cans/space_up = 10, /obj/item/reagent_containers/food/drinks/soda_cans/pwr_game = 10,
-					/obj/item/reagent_containers/food/drinks/soda_cans/lemon_lime = 10, /obj/item/reagent_containers/glass/beaker/waterbottle = 10)
+					/obj/item/reagent_containers/food/drinks/soda_cans/lemon_lime = 10, /obj/item/reagent_containers/glass/beaker/waterbottle = 10,
+					/obj/item/reagent_containers/food/drinks/soda_cans/tab = 10)
 	contraband = list(/obj/item/reagent_containers/food/drinks/soda_cans/thirteenloko = 6, /obj/item/reagent_containers/food/drinks/soda_cans/shamblers = 6)
 	premium = list(/obj/item/reagent_containers/food/drinks/drinkingglass/filled/nuka_cola = 1, /obj/item/reagent_containers/food/drinks/soda_cans/air = 1)
 	refill_canister = /obj/item/vending_refill/cola
@@ -790,7 +791,8 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	products = list(/obj/item/reagent_containers/food/drinks/soda_cans/cola = 10, /obj/item/reagent_containers/food/drinks/soda_cans/space_mountain_wind = 10,
 					/obj/item/reagent_containers/food/drinks/soda_cans/dr_gibb = 10, /obj/item/reagent_containers/food/drinks/soda_cans/starkist = 10,
 					/obj/item/reagent_containers/food/drinks/soda_cans/space_up = 10, /obj/item/reagent_containers/food/drinks/soda_cans/pwr_game = 10,
-					/obj/item/reagent_containers/food/drinks/soda_cans/lemon_lime = 10, /obj/item/reagent_containers/food/drinks/soda_cans/shamblers = 10)
+					/obj/item/reagent_containers/food/drinks/soda_cans/lemon_lime = 10, /obj/item/reagent_containers/food/drinks/soda_cans/shamblers = 10,
+					/obj/item/reagent_containers/food/drinks/soda_cans/tab = 10)
 	product_slogans = "~Shake me up some of that Shambler's Juice!~"
 	product_ads = "Refreshing!;Jyrbv dv lg jfdv fw kyrk Jyrdscvi'j Alztv!;Over 1 trillion souls drank!;Thirsty? Nyp efk uizeb kyv uribevjj?;Kyv Jyrdscvi uizebj kyv ezxyk!;Drink up!;Krjkp."
 
