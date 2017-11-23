@@ -263,6 +263,13 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	surplus = 50
 	exclude_modes = list(/datum/game_mode/nuclear)
 
+/datum/uplink_item/dangerous/butterfly
+	name = "Energy Butterfly Knife"
+	desc = "A highly lethal and concealable knife that causes critical backstab damage when used with harm intent."
+	cost = 12//80 backstab damage and armour pierce isn't a fucking joke
+	item = /obj/item/melee/transforming/butterfly/energy
+	surplus = 15
+
 /datum/uplink_item/dangerous/flamethrower
 	name = "Flamethrower"
 	desc = "A flamethrower, fueled by a portion of highly flammable biotoxins stolen previously from Nanotrasen \
@@ -368,7 +375,7 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	cost = 12
 	surplus = 35
 	include_modes = list(/datum/game_mode/nuclear)
-	
+
 /datum/uplink_item/dangerous/guardian
 	name = "Holoparasites"
 	desc = "Though capable of near sorcerous feats via use of hardlight holograms and nanomachines, they require an \
@@ -1266,6 +1273,7 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	cost = 6
 	surplus = 20
 	restricted_roles = list("Janitor")
+
 
 /datum/uplink_item/role_restricted/his_grace
 	name = "His Grace"
