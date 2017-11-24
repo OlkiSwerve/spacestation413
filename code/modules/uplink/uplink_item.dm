@@ -243,6 +243,15 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	surplus = 25
 	include_modes = list(/datum/game_mode/nuclear)
 
+/datum/uplink_item/dangerous/ahab_tesla
+	name = "Ahab's Crosshairs"
+	desc = "A powerful tesla rifle styled after a legendary harpoon gun from a certain webcomic. \
+			Exterminates angels with the power of science!"
+	item = /obj/item/gun/energy/ahab_tesla
+	cost = 12
+	surplus = 0
+	include_modes = list(/datum/game_mode/nuclear)
+
 /datum/uplink_item/dangerous/bolt_action
 	name = "Surplus Rifle"
 	desc = "A horribly outdated bolt action weapon. You've got to be desperate to use this."
@@ -368,7 +377,7 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	cost = 12
 	surplus = 35
 	include_modes = list(/datum/game_mode/nuclear)
-	
+
 /datum/uplink_item/dangerous/guardian
 	name = "Holoparasites"
 	desc = "Though capable of near sorcerous feats via use of hardlight holograms and nanomachines, they require an \
