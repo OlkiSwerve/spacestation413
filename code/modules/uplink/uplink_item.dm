@@ -1295,6 +1295,14 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	restricted_roles = list("Clown")
 	surplus = 0 //No fun unless you're the clown!
 
+/datum/uplink_item/role_restricted/true_warhammer
+	name = "True Warhammer of Zillyhoo"
+	desc = "Unlike its replica counterparts, repeated exposure to this precious artifact of the Honkmother causes one to become quite silly indeed..."
+	cost = 6
+	item = /obj/item/zillyhoo_hammer/retardhammer
+	restricted_roles = list("Clown")
+	surplus = 0
+
 /datum/uplink_item/role_restricted/ancient_jumpsuit
 	name = "Ancient Jumpsuit"
 	desc = "A tattered old jumpsuit that will provide absolutely no benefit to you. It fills the wearer with a strange compulsion to blurt out 'glorf'."
