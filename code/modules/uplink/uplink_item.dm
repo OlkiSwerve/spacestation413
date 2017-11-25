@@ -243,6 +243,15 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	surplus = 25
 	include_modes = list(/datum/game_mode/nuclear)
 
+/datum/uplink_item/dangerous/ahab_tesla
+	name = "Ahab's Crosshairs"
+	desc = "A powerful tesla rifle styled after a legendary harpoon gun from a certain webcomic. \
+			Exterminates angels with the power of science!"
+	item = /obj/item/gun/energy/ahab_tesla
+	cost = 12
+	surplus = 0
+	include_modes = list(/datum/game_mode/nuclear)
+
 /datum/uplink_item/dangerous/bolt_action
 	name = "Surplus Rifle"
 	desc = "A horribly outdated bolt action weapon. You've got to be desperate to use this."
@@ -1293,6 +1302,14 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	item = /obj/item/pneumatic_cannon/pie/selfcharge
 	restricted_roles = list("Clown")
 	surplus = 0 //No fun unless you're the clown!
+
+/datum/uplink_item/role_restricted/true_warhammer
+	name = "True Warhammer of Zillyhoo"
+	desc = "Unlike its replica counterparts, repeated exposure to this precious artifact of the Honkmother causes one to become quite silly indeed..."
+	cost = 6
+	item = /obj/item/zillyhoo_hammer/retardhammer
+	restricted_roles = list("Clown")
+	surplus = 0
 
 /datum/uplink_item/role_restricted/ancient_jumpsuit
 	name = "Ancient Jumpsuit"
