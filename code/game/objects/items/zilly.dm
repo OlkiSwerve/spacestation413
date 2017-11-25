@@ -3,6 +3,7 @@
 
 obj/item/zillyhoo_hammer
 	name = "Warhammer of Zillyhoo"
+	icon = 'icons/obj/homestuck_items.dmi'
 	icon_state = "zillyhoo"
 	item_state = "zillyhoo"
 	lefthand_file = 'icons/mob/inhands/weapons/custom_lefthand.dmi'
