@@ -28,6 +28,7 @@
 #define SWEDISH		"Swedish"
 #define CHAV		"Chav"
 #define ELVIS		"Elvis"
+#define CLUWNEMUT	"Cluwne"
 
 #define UI_CHANGED "ui changed"
 #define UE_CHANGED "ue changed"
