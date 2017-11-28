@@ -393,7 +393,7 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	cost = 18
 	surplus = 0
 	exclude_modes = list(/datum/game_mode/nuclear)
-	player_minimum = 18 //not 15 because this is basically WMD
+	player_minimum = 10 //not 15 because this is basically WMD
 
 // Ammunition
 /datum/uplink_item/ammo
@@ -1311,6 +1311,14 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	restricted_roles = list("Clown")
 	surplus = 0
 
+/datum/uplink_item/role_restricted/true_fluorite
+	name = "True Fluorite Octet"
+	desc = "Rolling the dice will execute a wide range of highly unpredictable effects. Infinite uses."
+	cost = 8
+	item = /obj/item/dice/fluorite
+	restricted_roles = list("Mime")
+	surplus = 0
+
 /datum/uplink_item/role_restricted/ancient_jumpsuit
 	name = "Ancient Jumpsuit"
 	desc = "A tattered old jumpsuit that will provide absolutely no benefit to you. It fills the wearer with a strange compulsion to blurt out 'glorf'."
@@ -1432,6 +1440,13 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 
 	SSblackbox.record_feedback("nested tally", "traitor_uplink_items_bought", 1, list("[initial(name)]", "[cost]"))
 	return C
+
+/datum/uplink_item/badass/tab
+	name = "Can of TaB"
+	desc = "A can of TaB, stolen from a Nanotrasen Cache of the stuff."
+	item = /obj/item/reagent_containers/food/drinks/soda_cans/tab
+	cost = 1
+	cant_discount = TRUE
 
 /datum/uplink_item/badass/random
 	name = "Random Item"
