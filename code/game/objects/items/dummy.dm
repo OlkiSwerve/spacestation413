@@ -10,7 +10,7 @@ obj/item/vent_dummy
 	var/spam_flag = 0
 	var/cooldowntime = 20
 	var/CanRename = TRUE
-	desc = "It's a puppet with a controllable mouth and arms. Suitable for ventriloquism acts."
+	desc = "It's a puppet with a controllable mouth and arms. Suitable for ventriloquism acts and disturbing people."
 	attack_verb = list("slapped", "fistbumped")
 
 obj/item/vent_dummy/attack_self(mob/living/user)
@@ -22,7 +22,7 @@ obj/item/vent_dummy/attack_self(mob/living/user)
 				return FALSE
 			if(custom_name)
 				name = custom_name
-				desc = "It's [custom_name] the ventriloquist dummy... did it just move?"
+				desc = "It's [custom_name] the puppet... did it just move?"
 		else
 			if (!spam_flag)
 				spam_flag = 1
