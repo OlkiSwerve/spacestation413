@@ -17098,6 +17098,7 @@
 /obj/structure/window/reinforced,
 /obj/structure/table/wood,
 /obj/item/device/instrument/violin,
+/obj/item/vent_dummy/cursed,
 /turf/open/floor/wood,
 /area/crew_quarters/theatre)
 "aPx" = (
@@ -18911,6 +18912,7 @@
 /area/crew_quarters/locker)
 "aUJ" = (
 /obj/structure/table,
+/obj/item/vent_dummy/sockpuppet,
 /turf/open/floor/plasteel,
 /area/crew_quarters/locker)
 "aUK" = (
@@ -56968,6 +56970,11 @@
 /obj/item/melee/transforming/butterfly,
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
+"cFD" = (
+/obj/structure/table/wood,
+/obj/item/vent_dummy/handlion,
+/turf/open/floor/wood,
+/area/library)
 
 (1,1,1) = {"
 aaa
@@ -100258,7 +100265,7 @@ aFB
 aFB
 aIC
 aKd
-aLB
+cFD
 aNm
 aNl
 aPN
