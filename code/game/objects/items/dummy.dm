@@ -46,7 +46,7 @@ obj/item/vent_dummy/handlion
 	item_state = "handlion"
 	CanRename = FALSE
 	desc = "An animatronic hand lion, straight out of Mr. Whittlinghams cupboard. It can be set to lick or strike."
-	attack_verb = list("licked", "striked")
+	attack_verb = list("licked", "struck")
 	force = 0
 	throwforce = 0
 	var/lick = TRUE
