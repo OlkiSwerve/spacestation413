@@ -1,5 +1,5 @@
 obj/item/vent_dummy
-	name = "Ventriloquist Dummy"
+	name = "ventriloquist dummy"
 	icon = 'icons/obj/dummies.dmi'
 	icon_state = "dummy_default"
 	item_state = "dummy_default"
@@ -16,7 +16,7 @@ obj/item/vent_dummy
 obj/item/vent_dummy/attack_self(mob/living/user)
 	if(CanRename)
 		if (custom_name == null)
-			custom_name = stripped_input(user, "What is the dummies name?")
+			custom_name = stripped_input(user, "What is the puppets name?")
 			if(length(custom_name) > MAX_NAME_LEN)
 				to_chat(user, "<span class='danger'>Name is too long!</span>")
 				return FALSE
@@ -32,9 +32,10 @@ obj/item/vent_dummy/attack_self(mob/living/user)
 	return
 
 obj/item/vent_dummy/sockpuppet
-	name = "Sockpuppet"
+	name = "sock puppet"
 	icon_state = "sockpuppet"
-	desc = "A sock with buttons for eyes. Just stick it on your hand and you'll have your own portable buddy!"
+	item_state = null
+	desc = "A sock with buttons for eyes. Smells like feet."
 
 
 //Hand lion - More obscure british television references!
@@ -45,7 +46,7 @@ obj/item/vent_dummy/handlion
 	item_state = "handlion"
 	CanRename = FALSE
 	desc = "An animatronic hand lion, straight out of Mr. Whittlinghams cupboard. It can be set to lick or strike."
-	attack_verb = "licked"
+	attack_verb = list("licked", "striked")
 	force = 0
 	throwforce = 0
 	var/lick = TRUE
@@ -63,12 +64,10 @@ obj/item/vent_dummy/handlion/AltClick(mob/living/user)
 		to_chat(user, "<span class='notice'>The hand lion is now set to lick.</span>")
 		force = 0
 		throwforce = 0
-		attack_verb = "licked"
 	else
 		to_chat(user, "<span class='notice'>The hand lion is now set to strike!</span>")
 		force = 12
 		throwforce = 20
-		attack_verb = "striked"
 
 obj/item/vent_dummy/handlion/throw_impact(atom/A)
 	. = ..()
@@ -78,8 +77,11 @@ obj/item/vent_dummy/handlion/throw_impact(atom/A)
 //CURSED DUMMY
 obj/item/vent_dummy/cursed
 	var/awoken = FALSE
+	var/lying = 0
 	var/cannot_be_seen = 1
-	var/evil_lines = list()
+	var/evil_lines = list("<i>They're mocking you behind your back.</i>", "<i>Can you hear them laughing at you?</i>", "<i>We should teach them a lesson!</i>", "<i>Nobody likes you. Don't trust them.</i>", "<i>Wouldn't it be easy to just grab a knife?</i>", "<i>I say we kill 'em, kill 'em all!</i>")
+	var/fake_lines = list("Someone stole the spare.", "I saw someone break into engineering.", "The AI has been electrifying doors.", "Nukie outside!", "Someone's infected!")
+	var/tempting_lines = list("Psst, hey!", "Hey, you there!", "You look like you could use a friend.", "Hey, kid, want a balloon?")
 	var/mob/living/carrier
 	var/angry_line = "You shouldn't have done that..."
 
@@ -90,8 +92,16 @@ obj/item/vent_dummy/proc/Life()
 obj/item/vent_dummy/cursed/proc/awaken()
 	awoken = TRUE
 	flicker_lights()
+	Life()
 	log_admin("[name] has awoken.")
 	message_admins("[name] has awoken.")
+
+obj/item/vent_dummy/cursed/proc/purify()
+	if(awoken)
+		awoken = FALSE
+		log_admin("[name] has been purified and calmed.")
+		message_admins("[name] has been purified and calmed.")
+
 
 obj/item/vent_dummy/cursed/say()
 	if (prob(1) && !awoken) //1% chance to awaken the dummy each time it speaks
@@ -115,15 +125,84 @@ obj/item/vent_dummy/cursed/dropped(mob/user)
 	carrier = null
 	. = ..()
 
-// Awoken dummy shenanigans
+// Awoken dummy shenanigans - tfw no multiple inheritance
 
 /obj/item/vent_dummy/cursed/Life()
+	..()
+	if (awoken)
+		sleep 100
+		if(prob(5))
+			flicker_lights()
+		if(held)
+			if(prob(3))
+				var/line = pick(evil_lines)
+				to_chat(carrier,(line))
+			if(prob(3))
+				var/mob/living/carbon/human/H = pick(GLOB.player_list)
+				if (H != carrier)
+					say("[H] is the traitor.")
+				else
+					say("[carrier] should be promoted to captain.")
+			if(prob(3))
+				say(pick(fake_lines))
+		else
+			if(prob(5))
+				do_jitter_animation(500)
+
+			if(prob(3))
+				say(pick(tempting_lines))
+
+			if(prob(10))
+				jaunt(src)
+
+		Life() //recursive loop for now because I can't figure out how the mob/Life() proc works for looping
+
 
 /obj/item/vent_dummy/cursed/proc/flicker_lights()
 	var/area/A = get_area(get_turf(src))
 	for(var/obj/machinery/light/L in A)
 		L.flicker()
 	return
+
+obj/item/vent_dummy/cursed/proc/jaunt(obj/item/vent_dummy/cursed/D)
+	var/area/chosen = null
+	chosen = GLOB.teleportlocs[pick(GLOB.teleportlocs)]
+
+	var/list/L = list()
+
+	for(var/turf/T in get_area_turfs(chosen.type))
+		if(!T.density)
+			var/clear = 1
+			for(var/obj/O in T)
+				if(O.density)
+					clear = 0
+					break
+			if(clear)
+				L+=T
+
+	var/newloc = pick(L)
+
+	if(!can_be_seen(newloc) && !can_be_seen(D.loc))
+		D.loc = newloc
+		log_admin("[name] moved to [chosen.name].")
+		message_admins("[name] moved to [chosen.name].")
+
+
+/obj/item/vent_dummy/cursed/proc/do_jitter_animation(jitteriness)
+	var/amplitude = min(4, (jitteriness/100) + 1)
+	var/pixel_x_diff = rand(-amplitude, amplitude)
+	var/pixel_y_diff = rand(-amplitude/3, amplitude/3)
+	var/final_pixel_x = get_standard_pixel_x_offset(lying)
+	var/final_pixel_y = get_standard_pixel_y_offset(lying)
+	animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff , time = 2, loop = 6)
+	animate(pixel_x = final_pixel_x , pixel_y = final_pixel_y , time = 2)
+	floating = 0 // If we were without gravity, the bouncing animation got stopped, so we make sure to restart it in next life().
+
+/obj/item/vent_dummy/cursed/proc/get_standard_pixel_x_offset(lying = 0)
+	return initial(pixel_x)
+
+/obj/item/vent_dummy/cursed/proc/get_standard_pixel_y_offset(lying = 0)
+	return initial(pixel_y)
 
 /obj/item/vent_dummy/cursed/proc/can_be_seen(turf/destination)
 	if(!cannot_be_seen)
@@ -153,10 +232,10 @@ obj/item/vent_dummy/cursed/dropped(mob/user)
 					return M.occupant
 	return null
 
-
+/*
 obj/item/vent_dummy/cursed/woody
 	icon_state = "woody"
-	var/pullcord_lines = list()
+	var/pullcord_lines = list()*/
 
 obj/item/vent_dummy/cursed/makin
 	name = "puppet Makin"
@@ -164,4 +243,7 @@ obj/item/vent_dummy/cursed/makin
 	CanRename = FALSE
 	desc = "This ventriloquist dummy has an air of rationality about it."
 	attack_verb = list("rationalized", "discoursed", "banned", "shilled")
+	evil_lines = list("<i>Fanfiction is the best medium.</i>", "<i>Have you visited the library recently?</i>", "<i>You should read worm.</i>", "<i>Boring round.</i>", "<i>Go read some ratfic instead</i>", "<i>HPMOR gets better on every re-read</i>")
+	fake_lines = list("ZA WARUDO", "Take it to #social", "Read worm.", "I'm banning you.", "Are you calling me... entitled?")
+	tempting_lines = list("Hey you, have you read worm yet?", "Hey, you!", "Read worm.")
 	angry_line = "That was a bit... irrational"
