@@ -1278,6 +1278,14 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	restricted_roles = list("Clown")
 	surplus = 0
 
+/datum/uplink_item/role_restricted/true_fluorite
+	name = "True Fluorite Octet"
+	desc = "Rolling the dice will execute a wide range of highly unpredictable effects. Infinite uses."
+	cost = 8
+	item = /obj/item/dice/fluorite
+	restricted_roles = list("Mime")
+	surplus = 0
+
 /datum/uplink_item/role_restricted/ancient_jumpsuit
 	name = "Ancient Jumpsuit"
 	desc = "A tattered old jumpsuit that will provide absolutely no benefit to you. It fills the wearer with a strange compulsion to blurt out 'glorf'."
