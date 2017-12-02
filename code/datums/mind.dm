@@ -210,6 +210,12 @@
 	remove_objectives()
 	remove_antag_equip()
 
+/datum/mind/proc/remove_vampire(var/show_message = 1)
+	if(src in SSticker.mode.vampires)
+		SSticker.mode.vampires -= src
+		special_role = null
+		src.remove_vampire_powers()
+
 /datum/mind/proc/remove_wizard()
 	remove_antag_datum(/datum/antagonist/wizard)
 	special_role = null
@@ -246,6 +252,7 @@
 	remove_wizard()
 	remove_cultist()
 	remove_rev()
+	remove_vampire()
 	SSticker.mode.update_traitor_icons_removed(src)
 	SSticker.mode.update_cult_icons_removed(src)
 
@@ -1340,6 +1347,22 @@
 		var/datum/antagonist/traitor/T = new(src)
 		T.should_specialise = TRUE
 		add_antag_datum(T)
+
+/datum/mind/proc/make_Vampire(var/show_message = 1, var/generate_objectives = 1)
+	if(!(src in SSticker.mode.vampires))
+		SSticker.mode.vampires += src
+		SSticker.mode.grant_vampire_powers(current)
+		special_role = "Vampire"
+
+		if(show_message)
+			to_chat(current, "<B><font color='red'>Your powers are awoken. Your lust for blood grows... You are a Vampire!</font></B>")
+
+		if(generate_objectives)
+			SSticker.mode.forge_vampire_objectives(src)
+			var/obj_count = 1
+			for(var/datum/objective/objective in objectives)
+				to_chat(current, "<B>Objective #[obj_count]</B>: [objective.explanation_text]")
+				obj_count++
 
 
 /datum/mind/proc/make_Nuke(turf/spawnloc, nuke_code, leader=0, telecrystals = TRUE)
