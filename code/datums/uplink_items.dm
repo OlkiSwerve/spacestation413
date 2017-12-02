@@ -1324,6 +1324,13 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	limited_stock = 2 //you can't use more than two!
 	restricted_roles = list("Shaft Miner")
 
+/datum/uplink_item/role_restricted/gushers
+	name = "Treacherous Teal Tangerine Fruit Gushers"
+	desc = "A highly deadly poison, the target will only taste something bitter as they slowly die. However, you need to blend up this box's contents to get it in pure form."
+	item = /obj/item/reagent_containers/food/snacks/gushers/syndie
+	cost = 2
+	restricted_roles = list("Bartender", "Chemist", "Chef")
+
 // Pointless
 /datum/uplink_item/badass
 	category = "(Pointless) Badassery"
