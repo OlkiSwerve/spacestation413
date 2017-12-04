@@ -222,10 +222,9 @@
 			to_chat(src, "<span class='warning'>Not a drop of blood here.</span>")
 			src.mind.vampire.draining = null
 			return 0
-		/*if(!H.mind)
-			to_chat(src, "<span class='warning'>This blood is lifeless and has no power.</span>") //DONT FORGET TO UNCOMMENT
-			check_vampire_upgrade(mind)
-			src.mind.vampire.draining = null*/
+		if(!H.mind)
+			to_chat(src, "<span class='warning'>This blood is lifeless and has no power.</span>")
+			src.mind.vampire.draining = null
 			return 0
 		bloodtotal = src.mind.vampire.bloodtotal
 		bloodusable = src.mind.vampire.bloodusable

@@ -124,6 +124,8 @@
 ///FIRE CODE
 /mob/living/carbon/human/handle_fire()
 	..()
+	if(mind && mind.vampire && stat == DEAD)
+		dust()
 	if(dna)
 		dna.species.handle_fire(src)
 

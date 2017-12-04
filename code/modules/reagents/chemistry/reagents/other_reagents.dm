@@ -208,6 +208,22 @@
 			M.stuttering = 1
 		M.stuttering = min(M.stuttering+4, 10)
 		M.Dizzy(5)
+
+		if(isvampire(M))
+			if(!(VAMP_MATURE in M.mind.vampire.powers))
+				to_chat(M, "<span class='danger'>A freezing liquid permeates your bloodstream. Your vampiric powers fade and your insides burn.</span>")
+				M.mind.vampire.smitecounter += 10 //50 units to catch on fire. Generally you'll get fucked up quickly
+			else
+				to_chat(M, "<span class='warning'>A freezing liquid permeates your bloodstream. Your vampiric powers counter most of the damage.</span>")
+				M.mind.vampire.smitecounter += 2 //Basically nothing, unless you drank multiple bottles of holy water (250 units to catch on fire !)
+
+		if(M.mind && M.mind.special_role == "VampThrall")
+			SSticker.mode.remove_thrall(M.mind)
+			M.visible_message("<span class='notice'>[M] suddenly becomes calm and collected again, \his eyes clear up.</span>",
+			"<span class='notice'>Your blood cools down and you are inhabited by a sensation of untold calmness.</span>")
+
+
+
 		if(iscultist(M) && prob(5))
 			M.say(pick("Av'te Nar'sie","Pa'lid Mors","INO INO ORA ANA","SAT ANA!","Daim'niodeis Arc'iai Le'eones","R'ge Na'sie","Diabo us Vo'iscum","Eld' Mon Nobis"))
 		else if(is_servant_of_ratvar(M) && prob(8))
