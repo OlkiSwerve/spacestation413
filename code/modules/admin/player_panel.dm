@@ -593,6 +593,21 @@
 					dat += "<td><A href='?priv_msg=[sintouched.key]'>PM</A></td>"
 			dat += "</table>"
 
+		if(SSticker.mode.vampires.len)
+			dat += "<br><table cellspacing=5><tr><td><B>vampires</B></td><td></td><td></td></tr>"
+			for(var/X in SSticker.mode.vampires)
+				var/datum/mind/vampire = X
+				var/mob/M = vampire.current
+				if(M)
+					dat += "<tr><td><a href='?_src_=holder;[HrefToken()];adminplayeropts=[REF(M)]'>[M.real_name]</a>[M.client ? "" : " <i>(No Client)</i>"][M.stat == DEAD ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
+					dat += "<td><A href='?priv_msg=[M.ckey]'>PM</A></td>"
+					dat += "<td><A HREF='?_src_=holder;[HrefToken()];traitor=[REF(M)]'>Show Objective</A></td></tr>"
+					dat += "<td><A HREF='?_src_=holder;[HrefToken()];admincheckvampireinfo=[REF(M)]'>Show all vampire info</A></td></tr>"
+				else
+					dat += "<tr><td><a href='?_src_=vars;[HrefToken()];Vars=[REF(vampire)]'>[vampire.name]([vampire.key])</a><i>Vampire body destroyed!</i></td>"
+					dat += "<td><A href='?priv_msg=[vampire.key]'>PM</A></td></tr>"
+			dat += "</table>"
+
 		var/list/blob_minds = list()
 		for(var/mob/camera/blob/B in GLOB.mob_list)
 			blob_minds |= B.mind
@@ -610,7 +625,7 @@
 					dat += "<td><A href='?priv_msg=[blob.key]'>PM</A></td></tr>"
 			dat += "</table>"
 
-		
+
 		var/list/pirates = get_antagonists(/datum/antagonist/pirate)
 		if(pirates.len > 0)
 			dat += "<br><table cellspacing=5><tr><td><B>Pirates</B></td><td></td></tr>"

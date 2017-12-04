@@ -21,11 +21,11 @@
 
 //data HUD (medhud, sechud) defines
 //Don't forget to update human/New() if you change these!
-#define DATA_HUD_SECURITY_BASIC		1
-#define DATA_HUD_SECURITY_ADVANCED	2
-#define DATA_HUD_MEDICAL_BASIC		3
-#define DATA_HUD_MEDICAL_ADVANCED	4
-#define DATA_HUD_DIAGNOSTIC			5
+#define DATA_HUD_SECURITY_BASIC			1
+#define DATA_HUD_SECURITY_ADVANCED		2
+#define DATA_HUD_MEDICAL_BASIC			3
+#define DATA_HUD_MEDICAL_ADVANCED		4
+#define DATA_HUD_DIAGNOSTIC				5
 //antag HUD defines
 #define ANTAG_HUD_CULT			6
 #define ANTAG_HUD_REV			7
@@ -41,6 +41,7 @@
 #define ANTAG_HUD_SOULLESS		17
 #define ANTAG_HUD_CLOCKWORK		18
 #define ANTAG_HUD_BROTHER		19
+#define ANTAG_HUD_VAMPIRE		20
 
 // Notification action types
 #define NOTIFY_JUMP "jump"

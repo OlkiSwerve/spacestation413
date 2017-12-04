@@ -147,7 +147,8 @@
 	return TRUE
 
 /datum/admins/proc/makeVampire()
-
+	message_admins("One click vampire")
+	log_admin("One click vampire")
 	var/datum/game_mode/vampire/temp = new
 
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))

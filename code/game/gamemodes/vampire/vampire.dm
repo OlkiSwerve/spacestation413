@@ -12,7 +12,7 @@
 	restricted_jobs = list("AI", "Cyborg", "Mobile MMI", "Security Officer", "Warden", "Detective", "Head of Security", "Captain", "Chaplain") //Consistent screening has filtered all infiltration attempts on high value jobs
 	protected_jobs = list()
 	required_players = 1
-	required_players_secret = 10
+	var/required_players_secret = 10
 	required_enemies = 1
 	recommended_enemies = 4
 	announce_span = "danger"
@@ -21,7 +21,7 @@
 	var/traitors_possible = 4
 	var/num_modifier = 0
 	var/objective_count = 2
-	var/minimum_devils = 1
+	var/minimum_vampires = 1
 
 
 /datum/game_mode/vampire/pre_setup()
@@ -39,7 +39,7 @@
 	else
 		num_vampires = max(minimum_vampires, min(num_players(), traitors_possible))
 
-	for(var/j = 0, j < num_devils, j++)
+	for(var/j = 0, j < num_vampires, j++)
 		if (!antag_candidates.len)
 			break
 		var/datum/mind/vampire = pick(antag_candidates)
@@ -57,13 +57,12 @@
 
 /datum/game_mode/vampire/post_setup()
 	for(var/datum/mind/vampire in vampires)
-		grant_vampire_powers(vampire.current)
-		vampire.special_role = "Vampire"
-		forge_vampire_objectives(vampire)
-		greet_vampire(vampire)
-	return
 
-/datum/game_mode/proc/auto_declare_completion_vampire()
+		vampire.add_antag_datum(/datum/antagonist/vampire)
+	return ..()
+
+
+/datum/game_mode/proc/vampire_completion()
 
 	if(vampires.len)
 		var/text = "<br><font size=3><b>The [vampire_name]s were:</b></font>"
@@ -81,7 +80,7 @@
 				if(H && H.owner && H.owner == vampire.key)
 					TC_uses += H.spent_telecrystals
 					uplink_true = TRUE
-					purchases += H.purchase_log.generate_render(FALSE)
+					purchases += H.purchase_log
 
 			var/objectives = ""
 
@@ -119,26 +118,29 @@
 			text += ")"
 			text += {"<br><b>Total blood accumulated:</b> [vampire.vampire.bloodtotal]"}
 
+			var/special_role_text
+			if(vampire.special_role)
+				special_role_text = lowertext(vampire.special_role)
+			else
+				special_role_text = "antagonist"
+
 			if(traitorwin)
 				text += "<br><font color='green'><B>The [special_role_text] was successful!</B></font>"
-				feedback_add_details("traitor_success","SUCCESS")
 			else
 				text += "<br><font color='red'><B>The [special_role_text] has failed!</B></font>"
-				feedback_add_details("traitor_success","FAIL")
 
 	return text
 
 /datum/game_mode/proc/auto_declare_completion_enthralled()
 	var/text = vampire_completion()
 	if(enthralled.len)
-		var/icon/logo = icon('icons/mob/mob.dmi', "thrall-logo")
-		text += {"<br><FONT size = 2><img src="logo_[tempstate].png"> <B>The Enthralled were:</B> <img src="logo_[tempstate].png"></FONT>"}
+		text += {"<br><FONT size = 2><B>The Enthralled were:</B></FONT>"}
 		for(var/datum/mind/Mind in enthralled)
 			var/traitorwin = 1
 
 			if(Mind.current)
 				var/icon/flat = getFlatIcon(Mind.current, SOUTH, 1, 1)
-				text += {"<br><img src="logo_[tempstate].png"> <b>[Mind.key]</b> was <b>[Mind.name]</b> ("}
+				text += {"<br><b>[Mind.key]</b> was <b>[Mind.name]</b> ("}
 				if(Mind.current.stat == DEAD)
 					text += "died"
 					flat.Turn(90)
@@ -147,8 +149,7 @@
 				if(Mind.current.real_name != Mind.name)
 					text += " as [Mind.current.real_name]"
 			else
-				var/icon/sprotch = icon('icons/effects/blood.dmi', "floor1-old")
-				text += {"<br><img src="logo_[tempstate].png"> <b>[Mind.key]</b> was <b>[Mind.name]</b> ("}
+				text += {"<b>[Mind.key]</b> was <b>[Mind.name]</b> ("}
 				text += "body destroyed"
 			text += ")"
 
@@ -157,182 +158,52 @@
 				for(var/datum/objective/objective in Mind.objectives)
 					if(objective.check_completion())
 						text += "<br><B>Objective #[count]</B>: [objective.explanation_text] <font color='green'><B>Success!</B></font>"
-						feedback_add_details("traitor_objective","[objective.type]|SUCCESS")
 					else
 						text += "<br><B>Objective #[count]</B>: [objective.explanation_text] <font color='red'>Fail.</font>"
-						feedback_add_details("traitor_objective","[objective.type]|FAIL")
 						traitorwin = 0
 					count++
+
 			var/special_role_text
 			if(Mind.special_role)
 				special_role_text = lowertext(Mind.special_role)
 			else
 				special_role_text = "antagonist"
-			if(Mind.total_TC)
-				if(Mind.spent_TC)
-					text += "<br><span class='sinister'>TC Remaining: [Mind.total_TC - Mind.spent_TC]/[Mind.total_TC] - The tools used by the Enthralled were: [jointext(Mind.uplink_items_bought, ", ")]</span>"
-				else
-					text += "<span class='sinister'>The Enthralled was a smooth operator this round (did not purchase any uplink items)</span>"
+
+			var/TC_uses = 0
+			var/uplink_true = FALSE
+			var/purchases = ""
+
+			for(var/obj/item/device/uplink/H in GLOB.uplinks)
+				if(H && H.owner && H.owner == Mind.key)
+					TC_uses += H.spent_telecrystals
+					uplink_true = TRUE
+					purchases += H.purchase_log
+
+			if(uplink_true)
+				text += " (used [TC_uses] TC) [purchases]"
+				if(TC_uses==0 && traitorwin)
+					var/static/icon/badass = icon('icons/badass.dmi', "badass")
+					text += "<BIG>[icon2html(badass, world)]</BIG>"
+
+
 			if(traitorwin)
 				text += "<br><font color='green'><B>The [special_role_text] was successful!</B></font>"
-				feedback_add_details("traitor_success","SUCCESS")
 			else
 				text += "<br><font color='red'><B>The [special_role_text] has failed!</B></font>"
-				feedback_add_details("traitor_success","FAIL")
 		text += "<BR><HR>"
 	else
 		if(text)
 			text += "<BR><HR>"
 	return text
 
-/datum/game_mode/proc/forge_vampire_objectives(var/datum/mind/vampire)
-	//Objectives are traitor objectives plus blood objectives
-
-	var/datum/objective/blood/blood_objective = new
-	blood_objective.owner = vampire
-	blood_objective.gen_amount_goal(150, 400)
-	vampire.objectives += blood_objective
-
-	var/datum/objective/assassinate/kill_objective = new
-	kill_objective.owner = vampire
-	kill_objective.find_target()
-	vampire.objectives += kill_objective
-
-	var/datum/objective/steal/steal_objective = new
-	steal_objective.owner = vampire
-	steal_objective.find_target()
-	vampire.objectives += steal_objective
-
-
-	switch(rand(1,100))
-		if(1 to 80)
-			if (!(locate(/datum/objective/escape) in vampire.objectives))
-				var/datum/objective/escape/escape_objective = new
-				escape_objective.owner = vampire
-				vampire.objectives += escape_objective
-		else
-			if (!(locate(/datum/objective/survive) in vampire.objectives))
-				var/datum/objective/survive/survive_objective = new
-				survive_objective.owner = vampire
-				vampire.objectives += survive_objective
-	return
-
-/datum/game_mode/proc/grant_vampire_powers(mob/living/carbon/vampire_mob)
-	if(!istype(vampire_mob))
-		return
-	vampire_mob.make_vampire()
-	if(vampire_mob.dna)
-		//Forcefully remove veganism since it breaks you
-		vampire_mob.dna.SetSEState(VEGANBLOCK, 0)
-		domutcheck(vampire_mob, null, MUTCHK_FORCED)
-		//Just in case
-		vampire_mob.mutations.Remove(M_VEGAN)
-
-/datum/game_mode/proc/greet_vampire(var/datum/mind/vampire, var/you_are=1)
-	var/dat
-	if (you_are)
-		dat = "<span class='danger'>You are a Vampire!</br></span>"
-	dat += {"To drink blood from somebody, just bite their head (switch to harm intent, enable biting and attack the victim in the head with an empty hand). Drink blood to gain new powers and use coffins to regenerate your body if injured.
-You are weak to holy things and starlight. Don't go into space and avoid the Chaplain, the chapel, and especially Holy Water."}
-	to_chat(vampire.current, dat)
-	to_chat(vampire.current, "<B>You must complete the following tasks:</B>")
-	vampire.current << sound('sound/effects/vampire_intro.ogg')
-
-	var/obj_count = 1
-	for(var/datum/objective/objective in vampire.objectives)
-		to_chat(vampire.current, "<B>Objective #[obj_count]</B>: [objective.explanation_text]")
-		obj_count++
-	return
-
-/datum/vampire
-	var/bloodtotal = 0 // CHANGE TO ZERO WHEN PLAYTESTING HAPPENS
-	var/bloodusable = 0 // CHANGE TO ZERO WHEN PLAYTESTING HAPPENS
-	var/mob/living/owner = null
-	var/gender = FEMALE
-	var/iscloaking = 0 // handles the vampire cloak toggle
-	var/ismenacing = 0 // handles the vampire menace toggle
-	var/list/powers = list() // list of available powers and passives, see defines in setup.dm
-	var/mob/living/carbon/human/draining // who the vampire is draining of blood
-	var/nullified = 0 //Nullrod makes them useless for a short while.
-	var/smitecounter = 0 //Keeps track of how badly the vampire has been affected by holy tiles.
-
-/datum/vampire/New(gend = FEMALE)
-	gender = gend
-
-/mob/living/proc/make_vampire()
-	if(!mind)
-		return
-	if(!mind.vampire)
-		mind.vampire = new /datum/vampire(gender)
-		mind.vampire.owner = src
-	callOnLife += list("\ref[mind.vampire]" = "OnLife")
-	verbs += /client/proc/vampire_rejuvinate
-	verbs += /client/proc/vampire_hypnotise
-	verbs += /client/proc/vampire_glare
-	//testing purposes REMOVE BEFORE PUSH TO MASTER
-	/*for(var/handler in typesof(/client/proc))
-		if(findtext("[handler]","vampire_"))
-			verbs += handler*/
-	for(var/i = 1; i <= 3; i++) // CHANGE TO 3 RATHER THAN 12 AFTER TESTING IS DONE
-		if(!(i in mind.vampire.powers))
-			mind.vampire.powers.Add(i)
-
-
-	for(var/n in mind.vampire.powers)
-		switch(n)
-			if(VAMP_SHAPE)
-				verbs += /client/proc/vampire_shapeshift
-			if(VAMP_VISION)
-				continue
-			if(VAMP_DISEASE)
-				verbs += /client/proc/vampire_disease
-			if(VAMP_CLOAK)
-				verbs += /client/proc/vampire_cloak
-			if(VAMP_BATS)
-				verbs += /client/proc/vampire_bats
-			if(VAMP_SCREAM)
-				verbs += /client/proc/vampire_screech
-			if(VAMP_JAUNT)
-				verbs += /client/proc/vampire_jaunt
-			if(VAMP_BLINK)
-				verbs += /client/proc/vampire_shadowstep
-			if(VAMP_SLAVE)
-				verbs += /client/proc/vampire_enthrall
-			if(VAMP_MATURE)
-				continue
-			if(VAMP_SHADOW)
-				verbs += /client/proc/vampire_shadowmenace
-			if(VAMP_CHARISMA)
-				continue
-			if(VAMP_UNDYING)
-				verbs += /client/proc/vampire_undeath
-				verbs += /client/proc/vampire_spawncape
-/mob/proc/remove_vampire_powers()
-	for(var/handler in typesof(/client/proc))
-		if(findtext("[handler]","vampire_"))
-			verbs -= handler
-
-/datum/vampire/proc/OnLife()
-	if(!owner)
-		return
-	if(!owner.druggy)
-		owner.see_invisible = SEE_INVISIBLE_LEVEL_TWO
-
-	if(VAMP_MATURE in powers)
-		owner.change_sight(adding = SEE_TURFS|SEE_MOBS|SEE_OBJS)
-		owner.see_in_dark = 8
-		owner.see_invisible = SEE_INVISIBLE_MINIMUM
-
-	else if(VAMP_VISION in powers)
-		owner.change_sight(adding = SEE_MOBS)
 
 /mob/proc/handle_bloodsucking(mob/living/carbon/human/H)
 	src.mind.vampire.draining = H
 	var/blood = 0
 	var/bloodtotal = 0 //used to see if we increased our blood total
 	var/bloodusable = 0 //used to see if we increased our blood usable
-	src.attack_log += text("\[[time_stamp()]\] <font color='red'>Bit [H.name] ([H.ckey]) in the neck and draining their blood</font>")
-	H.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been bit in the neck by [src.name] ([src.ckey])</font>")
+	src.log_message("\[[time_stamp()]\] <font color='red'>Bit [H.name] ([H.ckey]) in the neck and draining their blood</font>", INDIVIDUAL_ATTACK_LOG)
+	H.log_message("\[[time_stamp()]\] <font color='orange'>Has been bit in the neck by [src.name] ([src.ckey])</font>", INDIVIDUAL_ATTACK_LOG)
 	log_attack("[src.name] ([src.ckey]) bit [H.name] ([H.ckey]) in the neck")
 
 	to_chat(src, "<span class='danger'>You latch on firmly to \the [H]'s neck.</span>")
@@ -343,39 +214,36 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 	else
 		H.LAssailant = src
 	while(do_mob(src, H, 50))
-		if(!mind.vampire || !(mind in ticker.mode.vampires))
+		if(!mind.vampire || !(mind in SSticker.mode.vampires))
 			to_chat(src, "<span class='warning'>Your fangs have disappeared!</span>")
 			src.mind.vampire.draining = null
 			return 0
-		if(src.mutations.Find(M_VEGAN))
-			to_chat(src, "<span class='warning'>Being a vegan, the mere thought of drinking blood disgusts you. You stop immediately.</span>")
-			src.mind.vampire.draining = null
-			return 0
-		if(H.species.anatomy_flags & NO_BLOOD)
+		if(NOBLOOD in H.dna.species.species_traits)
 			to_chat(src, "<span class='warning'>Not a drop of blood here.</span>")
 			src.mind.vampire.draining = null
 			return 0
-		if(!H.mind)
-			to_chat(src, "<span class='warning'>This blood is lifeless and has no power.</span>")
-			src.mind.vampire.draining = null
+		/*if(!H.mind)
+			to_chat(src, "<span class='warning'>This blood is lifeless and has no power.</span>") //DONT FORGET TO UNCOMMENT
+			check_vampire_upgrade(mind)
+			src.mind.vampire.draining = null*/
 			return 0
 		bloodtotal = src.mind.vampire.bloodtotal
 		bloodusable = src.mind.vampire.bloodusable
-		if(!H.vessel.get_reagent_amount(BLOOD))
+		if(H.blood_volume == 0)
 			to_chat(src, "<span class='warning'>They've got no blood left to give.</span>")
 			break
-		if(H.stat < 2) //alive
-			blood = min(10, H.vessel.get_reagent_amount(BLOOD))// if they have less than 10 blood, give them the remnant else they get 10 blood
+		if(H.stat < 3) //alive
+			blood = min(15, H.vessel.get_reagent_amount("blood"))// if they have less than 10 blood, give them the remnant else they get 10 blood
 			src.mind.vampire.bloodtotal += blood
 			src.mind.vampire.bloodusable += blood
 			H.adjustCloneLoss(10) // beep boop 10 damage
 		else
-			blood = min(5, H.vessel.get_reagent_amount(BLOOD))// The dead only give 5 bloods
+			blood = min(7, H.vessel.get_reagent_amount("blood"))// The dead only give 5 bloods
 			src.mind.vampire.bloodtotal += blood
 		if(bloodtotal != src.mind.vampire.bloodtotal)
 			to_chat(src, "<span class='notice'>You have accumulated [src.mind.vampire.bloodtotal] [src.mind.vampire.bloodtotal > 1 ? "units" : "unit"] of blood[src.mind.vampire.bloodusable != bloodusable ?", and have [src.mind.vampire.bloodusable] left to use" : "."]</span>")
 		check_vampire_upgrade(mind)
-		H.vessel.remove_reagent(BLOOD,25)
+		H.vessel.remove_reagent("blood", 30)
 
 	src.mind.vampire.draining = null
 	to_chat(src, "<span class='notice'>You stop draining [H.name] of blood.</span>")
@@ -502,14 +370,41 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 					verbs += /client/proc/vampire_undeath
 					verbs += /client/proc/vampire_spawncape
 
-//prepare for copypaste
+
+
+
 /datum/game_mode/proc/update_vampire_icons_added(datum/mind/vampire_mind)
+	log_admin("vampire HUD added")
+	message_admins("vampire HUD added")
+	var/datum/atom_hud/antag/hud = GLOB.huds[ANTAG_HUD_VAMPIRE]
+	hud.join_hud(vampire_mind.current)
+	log_admin("Setting vampire HUD")
+	set_antag_hud(vampire_mind.current, "vampire")
+
+/datum/game_mode/proc/update_vampire_icons_removed(datum/mind/vampire_mind)
+	var/datum/atom_hud/antag/hud = GLOB.huds[ANTAG_HUD_VAMPIRE]
+	hud.leave_hud(vampire_mind.current)
+	set_antag_hud(vampire_mind.current, null)
+
+/datum/game_mode/proc/update_enthralled_icons_added(datum/mind/enthralled_mind)
+	var/datum/atom_hud/antag/hud = GLOB.huds[ANTAG_HUD_VAMPIRE]
+	hud.join_hud(enthralled_mind.current)
+	set_antag_hud(enthralled_mind.current, "vampthrall")
+
+/datum/game_mode/proc/update_enthralled_icons_removed(datum/mind/enthralled_mind)
+	var/datum/atom_hud/antag/hud = GLOB.huds[ANTAG_HUD_VAMPIRE]
+	hud.leave_hud(enthralled_mind.current)
+	set_antag_hud(enthralled_mind.current, null)
+
+/*
+/datum/game_mode/proc/update_vampire_icons_added(datum/mind/vampire_mind)
+
 	var/ref = "\ref[vampire_mind]"
 	if(ref in thralls)
 		if(vampire_mind.current)
 			if(vampire_mind.current.client)
-				var/image/I = image('icons/mob/mob.dmi', loc = vampire_mind.current, icon_state = "vampire")
-				I.plane = VAMP_ANTAG_HUD_PLANE
+				var/image/I = image('icons/mob/mob3.dmi', loc = vampire_mind.current, icon_state = "vampire")
+				I.plane = HUD_PLANE
 				vampire_mind.current.client.images += I
 	for(var/headref in thralls)
 		for(var/datum/mind/t_mind in thralls[headref])
@@ -517,21 +412,24 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 			if(head)
 				if(head.current)
 					if(head.current.client)
-						var/image/I = image('icons/mob/mob.dmi', loc = t_mind.current, icon_state = "vampthrall")
-						I.plane = VAMP_ANTAG_HUD_PLANE
+						var/image/I = image('icons/mob/mob3.dmi', loc = t_mind.current, icon_state = "vampthrall")
+						I.plane = HUD_PLANE
 						head.current.client.images += I
 				if(t_mind.current)
 					if(t_mind.current.client)
-						var/image/I = image('icons/mob/mob.dmi', loc = head.current, icon_state = "vampire")
-						I.plane = VAMP_ANTAG_HUD_PLANE
+						var/image/I = image('icons/mob/mob3.dmi', loc = head.current, icon_state = "vampire")
+						I.plane = HUD_PLANE
 						t_mind.current.client.images += I
 				if(t_mind.current)
 					if(t_mind.current.client)
-						var/image/I = image('icons/mob/mob.dmi', loc = t_mind.current, icon_state = "vampthrall")
-						I.plane = VAMP_ANTAG_HUD_PLANE
+						var/image/I = image('icons/mob/mob3.dmi', loc = t_mind.current, icon_state = "vampthrall")
+						I.plane = HUD_PLANE
 						t_mind.current.client.images += I
 
+
+
 /datum/game_mode/proc/update_vampire_icons_removed(datum/mind/vampire_mind)
+
 	for(var/headref in thralls)
 		var/datum/mind/head = locate(headref)
 		for(var/datum/mind/t_mind in thralls[headref])
@@ -556,7 +454,7 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 			for(var/image/I in vampire_mind.current.client.images)
 				if(I.icon_state == "vampthrall" || I.icon_state == "vampire")
 					//del(I)
-					vampire_mind.current.client.images -= I
+					vampire_mind.current.client.images -= I*/
 
 /datum/game_mode/proc/remove_thrall(datum/mind/enthralled_mind)
 	var/datum/mind/headvamp
@@ -581,8 +479,8 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 	var/ay = y
 
 	for(var/i = 1 to 20)
-		ax += sun.dx
-		ay += sun.dy
+		ax += SSsun.dx
+		ay += SSsun.dy
 
 		var/turf/T = locate( round(ax,0.5),round(ay,0.5),z)
 
@@ -622,7 +520,7 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 		if(prob(35))
 			to_chat(src, "<span class='danger'>This ground is blessed. Get away, or splatter it with blood to make it safe for you.</span>")
 
-	if(!((VAMP_MATURE in mind.vampire.powers)) && get_area(src) == /area/chapel) //stay out of the chapel unless you want to turn into a pile of ashes
+	if(!((VAMP_MATURE in mind.vampire.powers)) && get_area(get_turf(src)) == /area/chapel) //stay out of the chapel unless you want to turn into a pile of ashes
 		mind.vampire.nullified = max(5, mind.vampire.nullified + 2)
 		if(prob(35))
 			to_chat(src, "<span class='sinister'>You feel yourself growing weaker.</span>")
@@ -693,13 +591,13 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 		if(!hud_used.vampire_blood_display)
 			hud_used.vampire_hud()
 			//hud_used.human_hud(hud_used.ui_style)
-		hud_used.vampire_blood_display.maptext_width = WORLD_ICON_SIZE*2
-		hud_used.vampire_blood_display.maptext_height = WORLD_ICON_SIZE
-		hud_used.vampire_blood_display.maptext = "<div align='left' valign='top' style='position:relative; top:0px; left:6px'>U:<font color='#33FF33'>[mind.vampire.bloodusable]</font><br> T:<font color='#FFFF00'>[mind.vampire.bloodtotal]</font></div>"
+		//hud_used.vampire_blood_display.maptext_width = world.icon_size*2
+		//hud_used.vampire_blood_display.maptext_height = world.icon_size*/
 	handle_vampire_cloak()
 	handle_vampire_menace()
 	handle_vampire_smite()
-	if(istype(loc, /turf/space))
+	handle_vampire_vision()
+	if(istype(loc, /turf/open/space))
 		check_sun()
 	if(istype(loc, /obj/structure/closet/coffin))
 		adjustBruteLoss(-4)
@@ -708,11 +606,4 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 		adjustOxyLoss(-4)
 		mind.vampire.smitecounter = 0
 		mind.vampire.nullified -= 5
-		for(var/datum/organ/internal/I in internal_organs)
-			if(I && I.damage > 0)
-				I.damage = max(0, I.damage - 4)
-			if(I)
-				I.status &= ~ORGAN_BROKEN
-				I.status &= ~ORGAN_SPLINTED
-				I.status &= ~ORGAN_BLEEDING
 	mind.vampire.nullified = max(0, mind.vampire.nullified - 1)
