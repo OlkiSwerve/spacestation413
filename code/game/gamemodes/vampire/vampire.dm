@@ -468,7 +468,7 @@
 	enthralled -= enthralled_mind
 	enthralled_mind.special_role = null
 	update_vampire_icons_removed(enthralled_mind)
-	enthralled_mind.current.unsubLife(src)
+	//enthralled_mind.current.unsubLife(src)
 	to_chat(enthralled_mind.current, "<span class='danger'><FONT size = 3>The fog clouding your mind clears. You remember nothing from the moment you were enthralled until now.</FONT></span>")
 
 /mob/living/carbon/human/proc/check_sun()
