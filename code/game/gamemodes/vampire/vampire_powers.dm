@@ -194,7 +194,7 @@
 			to_chat(M.current, "<span class='warning'>Your piercing gaze knocks out [C.name].</span>")
 			to_chat(C, "<span class='sinister'>You find yourself unable to move and barely able to speak.</span>")
 			C.stuttering = 50
-			C.Stun(20)
+			C.Stun(180)
 	else
 		to_chat(M.current, "<span class='warning'>You broke your gaze.</span>")
 		return
@@ -285,8 +285,8 @@
 				dist_mobs |= C
 		dist_mobs -= close_mobs //So they don't get double affected.
 		for(var/mob/living/carbon/C in close_mobs)
-			C.Stun(8)
-			C.Knockdown(8)
+			C.Stun(120)
+			C.Knockdown(120)
 			C.stuttering += 20
 			if(C.eye_blind == 0)
 				C.set_blindness(1)
@@ -337,10 +337,10 @@
 			if(!C.vampire_affected(M))
 				continue
 			to_chat(C, "<span class='danger'><font size='3'>You hear a ear piercing shriek and your senses dull!</font></span>")
-			C.Knockdown(8)
+			C.Knockdown(120)
 			C.adjustEarDamage(20)
 			C.stuttering = 20
-			C.Stun(8)
+			C.Stun(120)
 			C.Jitter(150)
 		for(var/obj/structure/window/W in view(4))
 			W.take_damage(100)
