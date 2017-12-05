@@ -23,6 +23,8 @@
 	var/objective_count = 2
 	var/minimum_vampires = 1
 
+/datum/game_mode/vampire/generate_report()
+	return "Intel suggests the presence of unholy supernatural lifeforms with a taste for blood on the station. Crewmembers are advised to cover their necks and consult their nearest spiritual advisor."
 
 /datum/game_mode/vampire/pre_setup()
 
