@@ -78,7 +78,7 @@
 
 	var/last_words	//used for database logging
 
-	var/list/callOnLife = list() //
+  var/list/callOnLife = list() //
 
 	var/list/obj/effect/proc_holder/abilities = list()
 
