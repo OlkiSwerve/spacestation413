@@ -207,6 +207,50 @@
 	if(is_servant_of_ratvar(M))
 		to_chat(M, "<span class='userdanger'>A darkness begins to spread its unholy tendrils through your mind, purging the Justiciar's influence!</span>")
 	..()
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(isvampire(H))
+			if(!(VAMP_UNDYING in H.mind.vampire.powers))
+				if(method == TOUCH)
+
+					if(H.wear_mask)
+						to_chat(H, "<span class='warning'>Your mask protects you from the holy water!</span>")
+						return
+
+					if(H.head)
+						to_chat(H, "<span class='warning'>Your helmet protects you from the holy water!</span>")
+						return
+
+
+					if(prob(15) && volume >= 30)
+						var/obj/item/bodypart/affecting = H.get_bodypart(HEAD)
+						if(affecting)
+							if(!(VAMP_MATURE in H.mind.vampire.powers))
+								to_chat(H, "<span class='danger'>A freezing liquid covers your face. Its melting!</span>")
+								H.mind.vampire.smitecounter += 60 //Equivalent from metabolizing all this holy water normally
+								affecting.receive_damage(30, 0)
+								H.facial_hair_style = "Shaved"
+								H.hair_style = "Bald"
+								H.update_hair()
+								H.status_flags |= DISFIGURED
+								H.emote("scream")
+							else
+								to_chat(H, "<span class='warning'>A freezing liquid covers your face. Your vampiric powers protect you!</span>")
+								H.mind.vampire.smitecounter += 12 //Ditto above
+
+					else
+						if(!(VAMP_MATURE in H.mind.vampire.powers))
+							to_chat(H, "<span class='danger'>You are doused with a freezing liquid. You're melting!</span>")
+							H.adjustFireLoss(min(15, volume * 2)) //Uses min() and volume to make sure they aren't being sprayed in trace amounts (1 unit != insta rape) -- Doohl
+							H.mind.vampire.smitecounter += volume * 2
+						else
+							to_chat(H, "<span class='warning'>You are doused with a freezing liquid. Your vampiric powers protect you!</span>")
+							H.mind.vampire.smitecounter += volume * 0.4
+				else
+					H.adjustFireLoss(min(15, volume * 2))
+					H.mind.vampire.smitecounter += 5
+
+				H.update_damage_overlays()
 
 /datum/reagent/water/holywater/on_mob_life(mob/living/M)
 	if(!data)
