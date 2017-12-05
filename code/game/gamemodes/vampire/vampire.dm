@@ -76,7 +76,7 @@
 			var/uplink_true = FALSE
 			var/purchases = ""
 
-			for(var/obj/item/device/uplink/H in GLOB.uplinks)
+			for(var/datum/component/uplink/H in GLOB.uplinks)
 				if(H && H.owner && H.owner == vampire.key)
 					TC_uses += H.spent_telecrystals
 					uplink_true = TRUE
@@ -173,7 +173,7 @@
 			var/uplink_true = FALSE
 			var/purchases = ""
 
-			for(var/obj/item/device/uplink/H in GLOB.uplinks)
+			for(var/datum/component/uplink/H in GLOB.uplinks)
 				if(H && H.owner && H.owner == Mind.key)
 					TC_uses += H.spent_telecrystals
 					uplink_true = TRUE
@@ -468,7 +468,7 @@
 	enthralled -= enthralled_mind
 	enthralled_mind.special_role = null
 	update_vampire_icons_removed(enthralled_mind)
-	enthralled_mind.current.unsubLife(src)
+	//enthralled_mind.current.unsubLife(src)
 	to_chat(enthralled_mind.current, "<span class='danger'><FONT size = 3>The fog clouding your mind clears. You remember nothing from the moment you were enthralled until now.</FONT></span>")
 
 /mob/living/carbon/human/proc/check_sun()
