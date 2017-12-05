@@ -33,6 +33,16 @@
 				C.blood_volume = min(C.blood_volume + round(reac_volume, 0.1), BLOOD_VOLUME_MAXIMUM)
 
 
+/datum/reagent/blood/reaction_obj(var/obj/O, var/volume)
+	if(istype(O, /obj/item/clothing/mask/stone))
+		var/obj/item/clothing/mask/stone/S = O
+		S.spikes()
+
+	if(..())
+		return 1
+
+
+
 /datum/reagent/blood/on_new(list/data)
 	if(istype(data))
 		SetViruses(src, data)

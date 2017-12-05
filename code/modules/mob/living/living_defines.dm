@@ -78,9 +78,11 @@
 
 	var/last_words	//used for database logging
 
+	var/list/callOnLife = list() //
+
 	var/list/obj/effect/proc_holder/abilities = list()
 
-	var/list/callOnLife = list() //
+
 
 /mob/living/proc/unsubLife(datum/sub)
 	while("\ref[sub]" in callOnLife)
