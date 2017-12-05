@@ -76,7 +76,7 @@
 			var/uplink_true = FALSE
 			var/purchases = ""
 
-			for(var/obj/item/device/uplink/H in GLOB.uplinks)
+			for(var/datum/component/uplink/H in GLOB.uplinks)
 				if(H && H.owner && H.owner == vampire.key)
 					TC_uses += H.spent_telecrystals
 					uplink_true = TRUE
@@ -173,7 +173,7 @@
 			var/uplink_true = FALSE
 			var/purchases = ""
 
-			for(var/obj/item/device/uplink/H in GLOB.uplinks)
+			for(var/datum/component/uplink/H in GLOB.uplinks)
 				if(H && H.owner && H.owner == Mind.key)
 					TC_uses += H.spent_telecrystals
 					uplink_true = TRUE
