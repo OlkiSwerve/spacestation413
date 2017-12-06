@@ -54,7 +54,7 @@
 		else
 			to_chat(M, "<span class='warning'><B>You punch the puny [src]!</B></span>")
 			playsound(src.loc, "sound/misc/meteorimpact.ogg", 40, 1)
-			src.visible_message("<span style=\"color:red\"><B>[M] punches the [src]!</B></span>")
+			src.visible_message("<span class='warning'><B>[M] punches the [src]!</B></span>")
 	else
 		playsound(src.loc, "sound/machines/click.ogg", 15, 1, -3)
 		if(rider && prob(40))
@@ -216,7 +216,7 @@ obj/vehicle/clowncar/proc/honk()
 		playsound(src.loc, "shatter", 40, 1)
 		to_chat(rider, "<span class='warning'><B>You are flung through the [src]'s windshield!</B></span>")
 		rider.Knockdown(100)
-		rider.adjustStaminaLoss(40))
+		rider.adjustStaminaLoss(40)
 		src.visible_message("<span class='warning'><B>[rider] is flung through the [src]'s windshield!</B></span>", 1)
 		var/turf/target = get_edge_target_turf(src, src.dir)
 		rider.throw_at(target, 5, 1)
