@@ -25,18 +25,20 @@
 				to_chat(user, "<span class='info'>[src] does not work on this sort of creature.</span>")
 				return
 			if(M.stat == DEAD)
-				M.faction = list("neutral")
+				M.faction = list()
 				M.revive(full_heal = 1, admin_revive = 1)
 				if(ishostile(target))
 					var/mob/living/simple_animal/hostile/H = M
+					H.attack_same = 0
 					if(malfunctioning)
 						H.faction |= list("lazarus", "[REF(user)]")
 						H.robust_searching = 1
 						H.friends += user
-						H.attack_same = 1
 						log_game("[user] has revived hostile mob [target] with a malfunctioning lazarus injector")
 					else
-						H.attack_same = 0
+						H.faction |= list("neutral")
+				else
+					M.faction |= list("neutral")
 				loaded = 0
 				user.visible_message("<span class='notice'>[user] injects [M] with [src], reviving it.</span>")
 				SSblackbox.record_feedback("tally", "lazarus_injector", 1, M.type)
@@ -142,8 +144,6 @@
 				if(capsuleowner in H.friends)
 					if(insert(AM, user) == -1) //Limit reached
 						break
-		else
-			insert(AM, user) // allows non-hostile mobs to be captured, might disable this
 
 /obj/item/device/mobcapsule/proc/insert(var/atom/movable/AM, mob/user)
 	if(contained_mob)
