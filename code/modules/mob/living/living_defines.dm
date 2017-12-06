@@ -57,6 +57,7 @@
 
 	var/last_bumped = 0
 	var/unique_name = 0 //if a mob's name should be appended with an id when created e.g. Mob (666)
+	var/custon_name = 0 // true if a mob has a custom/proper name (can only be set once)
 
 	var/list/butcher_results = null
 	var/hellbound = 0 //People who've signed infernal contracts are unrevivable.

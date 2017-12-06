@@ -1,6 +1,6 @@
 //goat
 /mob/living/simple_animal/hostile/retaliate/goat
-	name = "goat"
+	name = "\improper goat"
 	desc = "Not known for their pleasant disposition."
 	icon_state = "goat"
 	icon_living = "goat"
@@ -92,7 +92,7 @@
 
 //cow
 /mob/living/simple_animal/cow
-	name = "cow"
+	name = "\improper cow"
 	desc = "Known for their milk, just don't tip them over."
 	icon_state = "cow"
 	icon_living = "cow"

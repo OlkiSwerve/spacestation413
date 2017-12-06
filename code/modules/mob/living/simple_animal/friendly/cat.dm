@@ -1,6 +1,6 @@
 //Cat
 /mob/living/simple_animal/pet/cat
-	name = "cat"
+	name = "\improper cat"
 	desc = "Kitty!!"
 	icon = 'icons/mob/pets.dmi'
 	icon_state = "cat2"
@@ -44,7 +44,7 @@
 
 
 /mob/living/simple_animal/pet/cat/space
-	name = "space cat"
+	name = "\improper space cat"
 	desc = "It's a cat... in space!"
 	icon_state = "spacecat"
 	icon_living = "spacecat"
@@ -60,9 +60,10 @@
 	icon_state = "original"
 	icon_living = "original"
 	icon_dead = "original_dead"
+	custom_name = 1
 
 /mob/living/simple_animal/pet/cat/kitten
-	name = "kitten"
+	name = "\improper kitten"
 	desc = "D'aaawwww."
 	icon_state = "kitten"
 	icon_living = "kitten"
@@ -84,6 +85,7 @@
 	var/list/children = list()//Actual mob instances of children
 	var/cats_deployed = 0
 	var/memory_saved = FALSE
+	custom_name = 1
 
 /mob/living/simple_animal/pet/cat/Runtime/Initialize()
 	if(prob(5))
@@ -153,6 +155,7 @@
 	name = "Proc"
 	gender = MALE
 	gold_core_spawnable = NO_SPAWN
+	custom_name = 1
 
 /mob/living/simple_animal/pet/cat/Life()
 	if(!stat && !buckled && !client)
@@ -247,6 +250,7 @@
 	attacked_sound = 'sound/items/eatfood.ogg'
 	deathmessage = "loses its false life and collapses!"
 	death_sound = "bodyfall"
+	custom_name = 1
 
 /mob/living/simple_animal/pet/cat/cak/CheckParts(list/parts)
 	..()

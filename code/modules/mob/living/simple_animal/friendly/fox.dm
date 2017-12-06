@@ -1,6 +1,6 @@
 //Foxxy
 /mob/living/simple_animal/pet/fox
-	name = "fox"
+	name = "\improper fox"
 	desc = "It's a fox."
 	icon = 'icons/mob/pets.dmi'
 	icon_state = "fox"
@@ -25,3 +25,4 @@
 	desc = "Renault, the Captain's trustworthy fox."
 	gender = FEMALE
 	gold_core_spawnable = NO_SPAWN
+	custom_name = 1

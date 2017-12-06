@@ -1,5 +1,5 @@
 /mob/living/simple_animal/sloth
-	name = "sloth"
+	name = "\improper sloth"
 	desc = "An adorable, sleepy creature."
 	icon = 'icons/mob/pets.dmi'
 	icon_state = "sloth"
@@ -28,6 +28,8 @@
 	name = "Paperwork"
 	desc = "Cargo's pet sloth. About as useful as the rest of the techs."
 	gold_core_spawnable = NO_SPAWN
+	gender = MALE
+	custom_name = 1
 
 //Cargo Sloth 2
 
@@ -40,3 +42,4 @@
 	gender = FEMALE
 	butcher_results = list(/obj/item/toy/spinningtoy = 1)
 	gold_core_spawnable = NO_SPAWN
+	custom_name = 1

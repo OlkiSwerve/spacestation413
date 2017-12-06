@@ -293,6 +293,7 @@
 	var/record_age = 1
 	var/memory_saved = FALSE
 	var/saved_head //path
+	custom_name = 1
 
 /mob/living/simple_animal/pet/dog/corgi/Ian/Initialize()
 	. = ..()
@@ -438,6 +439,7 @@
 	faction = list("dog", "cult")
 	gold_core_spawnable = NO_SPAWN
 	nofur = TRUE
+	custom_name = 1
 
 /mob/living/simple_animal/pet/dog/corgi/narsie/Life()
 	..()
@@ -559,6 +561,7 @@
 	var/turns_since_scan = 0
 	var/puppies = 0
 	gold_core_spawnable = NO_SPAWN
+	custom_name = 1
 
 //Lisa already has a cute bow!
 /mob/living/simple_animal/pet/dog/corgi/Lisa/Topic(href, href_list)
