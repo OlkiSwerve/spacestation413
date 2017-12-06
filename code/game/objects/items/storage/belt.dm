@@ -231,7 +231,9 @@
 		/obj/item/organ/regenerative_core,
 		/obj/item/device/wormhole_jaunter,
 		/obj/item/storage/bag/plants,
-		/obj/item/stack/marker_beacon
+		/obj/item/stack/marker_beacon,
+		/obj/item/device/mobcapsule,
+		/obj/item/lazarus_injector
 		)
 
 
