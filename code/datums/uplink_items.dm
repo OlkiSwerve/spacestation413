@@ -1324,6 +1324,16 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	limited_stock = 2 //you can't use more than two!
 	restricted_roles = list("Shaft Miner")
 
+/datum/uplink_item/role_restricted/mastertrainer
+	name = "Master Trainer's Belt"
+	desc = "A trainer's belt containing 6 random hostile mobs loyal to you alone."
+	item = /obj/item/storage/belt/lazarus/antag
+	cost = 8
+	restricted_roles = list("Shaft Miner")
+
+/datum/uplink_item/role_restricted/mastertrainer/spawn_item(turf/loc, datum/component/uplink/U, mob/user)
+	return new item(loc, user)
+
 /datum/uplink_item/role_restricted/gushers
 	name = "Treacherous Teal Tangerine Fruit Gushers"
 	desc = "A highly deadly poison, the target will only taste something bitter as they slowly die. However, you need to blend up this box's contents to get it in pure form."
