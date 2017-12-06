@@ -10,7 +10,7 @@
 /datum/antagonist/vampire/on_gain()
 	register()
 	grant_powers(owner)
-	if (give_objectives)
+	if(give_objectives)
 		forge_objectives(owner)
 	greet_vampire()
 	finalize_vampire()

@@ -14,6 +14,76 @@
 	var/view_range = 7
 	var/datum/riding/riding_datum = null
 
+	var/mob/living/carbon/human/rider = null
+	var/list/actions
+	var/list/actions_types
+	var/in_bump = 0
+	var/sealed_cabin = 0
+	var/rider_visible =	1
+	var/list/ability_buttons = new/list()
+	var/throw_dropped_items_overboard = 0 // See /mob/proc/drop_item() in mob.dm.
+
+
+obj/vehicle/Initialize()
+	. = ..()
+	for(var/path in actions_types)
+		new path(src)
+	actions_types = null
+
+obj/vehicle/attackby(obj/item/W as obj, mob/user as mob)
+	if(rider && rider_visible && W.force)
+		eject_rider()
+		W.attack(rider, user)
+		return
+	return ..()
+
+obj/vehicle/proc/eject_rider(var/crashed, var/selfdismount)
+	rider.forceMove(src.loc)
+	rider = null
+	return
+
+obj/vehicle/ex_act(severity)
+	switch(severity)
+		if(1.0)
+			for(var/atom/movable/A as mob|obj in src)
+				A.forceMove(src.loc)
+				A.ex_act(severity)
+				//Foreach goto(35)
+			//SN src = null
+			qdel(src)
+			return
+		if(2.0)
+			if (prob(50))
+				for(var/atom/movable/A as mob|obj in src)
+					A.forceMove(src.loc)
+					A.ex_act(severity)
+					//Foreach goto(108)
+				//SN src = null
+				qdel(src)
+				return
+		if(3.0)
+			if (prob(25))
+				for(var/atom/movable/A as mob|obj in src)
+					A.forceMove(src.loc)
+					A.ex_act(severity)
+					//Foreach goto(181)
+				//SN src = null
+				qdel(src)
+				return
+		else
+	return
+
+obj/vehicle/proc/Stopped()
+		return
+
+obj/vehicle/proc/stop()
+		walk(src,0)
+		Stopped()
+
+obj/vehicle/blob_act(var/power)
+		qdel(src)
+
+
 /obj/vehicle/Destroy()
 	QDEL_NULL(riding_datum)
 	return ..()

@@ -171,6 +171,15 @@
 /datum/action/item_action/toggle_firemode
 	name = "Toggle Firemode"
 
+/datum/action/item_action/honk_horn
+	name = "Honk Horn"
+
+/datum/action/item_action/honk_horn/Trigger()
+	var/obj/vehicle/clowncar/CC = target
+	if(istype(CC))
+		CC.honk()
+	return ..()
+
 /datum/action/item_action/rcl
 	name = "Change Cable Color"
 	icon_icon = 'icons/mob/actions/actions_items.dmi'

@@ -64,7 +64,7 @@
 	return ..()
 
 
-/datum/game_mode/proc/vampire_completion()
+/datum/game_mode/proc/auto_declare_completion_vampire()
 
 	if(vampires.len)
 		var/text = "<br><font size=3><b>The [vampire_name]s were:</b></font>"
@@ -130,11 +130,12 @@
 				text += "<br><font color='green'><B>The [special_role_text] was successful!</B></font>"
 			else
 				text += "<br><font color='red'><B>The [special_role_text] has failed!</B></font>"
+		to_chat(world, text)
 
 	return text
 
 /datum/game_mode/proc/auto_declare_completion_enthralled()
-	var/text = vampire_completion()
+	//var/text = vampire_completion()
 	if(enthralled.len)
 		text += {"<br><FONT size = 2><B>The Enthralled were:</B></FONT>"}
 		for(var/datum/mind/Mind in enthralled)

@@ -31,6 +31,9 @@
 	var/datum/proximity_monitor/proximity_monitor
 	var/buckle_message_cooldown = 0
 
+
+	var/last_bumped = 0
+
 /atom/New(loc, ...)
 	//atom creation method that preloads variables at creation
 	if(GLOB.use_preloader && (src.type == GLOB._preloader.target_path))//in case the instanciated atom is creating other atoms in New()
@@ -194,6 +197,18 @@
 
 /atom/proc/CollidedWith(atom/movable/AM)
 	set waitfor = FALSE
+	return
+
+/atom/proc/Bumped(AM as mob|obj)
+	return
+
+/atom/movable/Bump(var/atom/A as mob|obj|turf|area, yes)
+	spawn( 0 )
+		if ((A && yes)) //wtf
+			A.last_bumped = world.timeofday
+			A.Bumped(src)
+		return
+	..()
 	return
 
 // Convenience proc to see if a container is open for chemistry handling
