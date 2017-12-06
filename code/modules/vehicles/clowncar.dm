@@ -189,7 +189,7 @@
 		var/turf/target = get_edge_target_turf(src, src.dir)  //Throwing people around = more fun but makes the car worse as a traitor item because its harder to stuff people inside
 		M.throw_at(target, 5, 1)*/
 		M.Knockdown(100)
-		M.Dizzy(50)
+		M.adjustStaminaLoss(40)
 		playsound(src.loc, "sound/misc/meteorimpact.ogg", 40, 1)
 
 /obj/vehicle/clowncar/bullet_act(flag, A as obj)
@@ -201,7 +201,7 @@
 obj/vehicle/clowncar/proc/honk()
 	if(honkspam < world.time)
 		playsound(src.loc, "sound/effects/honk_hazzard.ogg", 15, 1)
-		honkspam = world.time + 70
+		honkspam = world.time + 80
 
 
 /obj/vehicle/clowncar/eject_rider(var/crashed, var/selfdismount)
@@ -216,7 +216,7 @@ obj/vehicle/clowncar/proc/honk()
 		playsound(src.loc, "shatter", 40, 1)
 		to_chat(rider, "<span class='warning'><B>You are flung through the [src]'s windshield!</B></span>")
 		rider.Knockdown(100)
-		rider.Dizzy(40)
+		rider.adjustStaminaLoss(40))
 		src.visible_message("<span class='warning'><B>[rider] is flung through the [src]'s windshield!</B></span>", 1)
 		var/turf/target = get_edge_target_turf(src, src.dir)
 		rider.throw_at(target, 5, 1)
