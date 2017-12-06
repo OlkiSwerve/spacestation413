@@ -15,7 +15,7 @@
 	icon = 'icons/mob/penguins.dmi'
 
 /mob/living/simple_animal/pet/penguin/emperor
-	name = "\improper Emperor penguin"
+	name = "Emperor penguin"
 	real_name = "penguin"
 	desc = "Emperor of all he surveys."
 	icon_state = "penguin"
@@ -25,14 +25,14 @@
 	gold_core_spawnable = FRIENDLY_SPAWN
 
 /mob/living/simple_animal/pet/penguin/emperor/shamebrero
-	name = "\improper Shamebrero penguin"
+	name = "Shamebrero penguin"
 	desc = "Shameful of all he surveys."
 	icon_state = "penguin_shamebrero"
 	icon_living = "penguin_shamebrero"
 
 /mob/living/simple_animal/pet/penguin/baby
 	speak = list("gah", "noot noot", "noot!", "noot", "squeee!", "noo!")
-	name = "\improper Penguin chick"
+	name = "Penguin chick"
 	real_name = "penguin"
 	desc = "Can't fly and barely waddles, yet the prince of all chicks."
 	icon_state = "penguin_baby"

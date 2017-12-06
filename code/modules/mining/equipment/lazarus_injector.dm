@@ -89,9 +89,6 @@
 		if(user != capsuleowner)
 			to_chat(user, "<span class='warning'>\The [src] briefly flashes an error.</span>")
 			return 0
-		if(contained_mob.custom_name)
-			to_chat(user, "<span class='warning'>[contained_mob] has already been named!</span>")
-			return 0
 		spawn()
 			var/mname = sanitize(input("Choose a name for your friend.", "Name your friend", contained_mob.name) as text|null)
 			if(mname)

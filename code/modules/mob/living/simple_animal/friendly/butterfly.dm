@@ -1,5 +1,5 @@
 /mob/living/simple_animal/butterfly
-	name = "\improper butterfly"
+	name = "butterfly"
 	desc = "A colorful butterfly, how'd it get up here?"
 	icon_state = "butterfly"
 	icon_living = "butterfly"

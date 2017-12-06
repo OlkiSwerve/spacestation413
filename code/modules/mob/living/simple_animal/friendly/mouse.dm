@@ -1,5 +1,5 @@
 /mob/living/simple_animal/mouse
-	name = "\improper mouse"
+	name = "mouse"
 	desc = "It's a nasty, ugly, evil, disease-ridden rodent."
 	icon_state = "mouse_gray"
 	icon_living = "mouse_gray"
@@ -99,10 +99,9 @@
 	response_disarm = "gently pushes aside"
 	response_harm   = "splats"
 	gold_core_spawnable = NO_SPAWN
-	custom_name = 1
 
 /obj/item/reagent_containers/food/snacks/deadmouse
-	name = "\improper dead mouse"
+	name = "dead mouse"
 	desc = "It looks like somebody dropped the bass on it. A lizard's favorite meal."
 	icon = 'icons/mob/animal.dmi'
 	icon_state = "mouse_gray_dead"

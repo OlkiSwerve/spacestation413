@@ -1037,8 +1037,3 @@
 /mob/living/proc/add_abilities_to_panel()
 	for(var/obj/effect/proc_holder/A in abilities)
 		statpanel("[A.panel]",A.get_panel_text(),A)
-
-/mob/living/proc/set_custom_name(var/new_name)
-	if(!custom_name)
-		custom_name = 1
-		name = new_name

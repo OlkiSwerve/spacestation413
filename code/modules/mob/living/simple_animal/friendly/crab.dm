@@ -1,6 +1,6 @@
 //Look Sir, free crabs!
 /mob/living/simple_animal/crab
-	name = "\improper crab"
+	name = "crab"
 	desc = "Free crabs!"
 	icon_state = "crab"
 	icon_living = "crab"
@@ -36,7 +36,7 @@
 
 //COFFEE! SQUEEEEEEEEE!
 /mob/living/simple_animal/crab/Coffee
-	name = "\improper Coffee"
+	name = "Coffee"
 	real_name = "Coffee"
 	desc = "It's Coffee, the other pet!"
 	gender = FEMALE
@@ -44,10 +44,9 @@
 	response_disarm = "gently pushes aside"
 	response_harm   = "stomps"
 	gold_core_spawnable = NO_SPAWN
-	custom_name = 1
 
 /mob/living/simple_animal/crab/evil
-	name = "\improper Evil Crab"
+	name = "Evil Crab"
 	real_name = "Evil Crab"
 	desc = "Unnerving, isn't it? It has to be planning something nefarious..."
 	icon_state = "evilcrab"
@@ -59,7 +58,7 @@
 	gold_core_spawnable = HOSTILE_SPAWN
 
 /mob/living/simple_animal/crab/kreb
-	name = "\improper Kreb"
+	name = "Kreb"
 	desc = "This is a real crab. The other crabs are simply gubbucks in disguise!"
 	real_name = "Kreb"
 	icon_state = "kreb"
@@ -71,7 +70,7 @@
 	gold_core_spawnable = NO_SPAWN
 
 /mob/living/simple_animal/crab/evil/kreb
-	name = "\improper Evil Kreb"
+	name = "Evil Kreb"
 	real_name = "Evil Kreb"
 	icon_state = "evilkreb"
 	icon_living = "evilkreb"

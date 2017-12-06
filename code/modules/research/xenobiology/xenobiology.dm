@@ -151,7 +151,7 @@
 
 	if (!newname)
 		newname = "pet slime"
-	M.set_custom_name(newname)
+	M.name = newname
 	M.real_name = newname
 	qdel(src)
 

@@ -27,7 +27,7 @@
 
 
 /mob/living/simple_animal/parrot
-	name = "\improper parrot"
+	name = "parrot"
 	desc = "The parrot squaks, \"It's a Parrot! BAWWK!\"" //'
 	icon = 'icons/mob/animal.dmi'
 	icon_state = "parrot_fly"
@@ -875,8 +875,6 @@
 	var/rounds_survived = 0
 	var/longest_survival = 0
 	var/longest_deathstreak = 0
-	custon_name = 1
-	gender = MALE
 
 /mob/living/simple_animal/parrot/Poly/Initialize()
 	ears = new /obj/item/device/radio/headset/headset_eng(src)
@@ -1003,7 +1001,7 @@
 
 
 /mob/living/simple_animal/parrot/clock_hawk
-	name = "\improper clock hawk"
+	name = "clock hawk"
 	desc = "Cbyl jnaan penpxre! Fdhnnnjx!"
 	icon_state = "clock_hawk_fly"
 	icon_living = "clock_hawk_fly"
