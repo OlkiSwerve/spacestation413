@@ -70,6 +70,7 @@
 	desc = "It allows you to store and deploy lazarus-injected creatures easier."
 	icon = 'icons/obj/mobcap.dmi'
 	icon_state = "mobcap0"
+	w_class = WEIGHT_CLASS_SMALL
 	throwforce = 00
 	throw_speed = 4
 	throw_range = 20

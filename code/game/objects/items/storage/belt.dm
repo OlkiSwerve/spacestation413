@@ -486,6 +486,7 @@
 	icon_state = "fannypack_yellow"
 	item_state = "fannypack_yellow"
 
+
 /obj/item/storage/belt/sabre
 	name = "sabre sheath"
 	desc = "An ornate sheath designed to hold an officer's blade."
@@ -531,3 +532,37 @@
 /obj/item/storage/belt/sabre/PopulateContents()
 	new /obj/item/melee/sabre(src)
 	update_icon()
+
+
+
+/obj/item/storage/belt/lazarus
+	name = "trainer's belt"
+	desc = "For the pokemo- mining master, holds your lazarus capsules."
+	icon = 'icons/obj/clothing/belts2.dmi'
+	icon_state = "lazarusbelt_0"
+	item_state = "lazbelt"
+	storage_slots = 6
+	w_class = WEIGHT_CLASS_BULKY
+	can_hold = list(
+		/obj/item/device/mobcapsule,
+		/obj/item/lazarus_injector)
+
+/obj/item/storage/belt/lazarus/New()
+	..()
+	update_icon()
+
+
+/obj/item/storage/belt/lazarus/update_icon()
+	..()
+	icon_state = "lazarusbelt_[contents.len]"
+
+/obj/item/storage/belt/lazarus/attackby(obj/item/W, mob/user)
+	var/amount = contents.len
+	. = ..()
+	if(amount != contents.len)
+		update_icon()
+
+/obj/item/storage/belt/lazarus/remove_from_storage(obj/item/W as obj, atom/new_location)
+	..()
+	update_icon()
+
