@@ -75,6 +75,7 @@
 	throw_speed = 4
 	throw_range = 20
 	force = 0
+	materials = list(MAT_METAL = 100)
 	var/storage_capacity = 1
 	var/mob/living/capsuleowner = null
 	var/tripped = 0
