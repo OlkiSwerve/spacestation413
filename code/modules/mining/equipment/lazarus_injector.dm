@@ -189,6 +189,9 @@
 	if(contained_mob)
 		return -1
 
+	if(AM == capsuleowner)
+		return -1 // don't capture yourself, that'd be stupid
+
 	if(istype(AM, /mob/living))
 	else if(!istype(AM, /obj/item) && !istype(AM, /obj/effect/dummy/chameleon))
 		return 0
@@ -196,12 +199,12 @@
 		return 0
 	AM.forceMove(interior_location)
 	contained_mob = AM
-	name = "lazarus capsule - [AM.name]"
+	name = "[base_name] - [AM.name]"
 	return 1
 
 /obj/item/device/mobcapsule/masterball
-	name = "Master Ball"
-	base_name = "Master Ball"
+	name = "\improper Master Capsule"
+	base_name = "\improper Master Capsule"
 	desc = "A legendary capsule that allows you to store and deploy ANY type of creature."
 
 /obj/item/device/mobcapsule/masterball/throw_impact(atom/movable/target, datum/thrownthing/throwinfo)
