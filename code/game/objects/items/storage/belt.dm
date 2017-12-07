@@ -231,7 +231,9 @@
 		/obj/item/organ/regenerative_core,
 		/obj/item/device/wormhole_jaunter,
 		/obj/item/storage/bag/plants,
-		/obj/item/stack/marker_beacon
+		/obj/item/stack/marker_beacon,
+		/obj/item/device/mobcapsule,
+		/obj/item/lazarus_injector
 		)
 
 
@@ -486,6 +488,7 @@
 	icon_state = "fannypack_yellow"
 	item_state = "fannypack_yellow"
 
+
 /obj/item/storage/belt/sabre
 	name = "sabre sheath"
 	desc = "An ornate sheath designed to hold an officer's blade."
@@ -531,3 +534,59 @@
 /obj/item/storage/belt/sabre/PopulateContents()
 	new /obj/item/melee/sabre(src)
 	update_icon()
+
+
+
+/obj/item/storage/belt/lazarus
+	name = "trainer's belt"
+	desc = "For the pokemo- mining master, holds your lazarus capsules."
+	icon = 'icons/obj/clothing/belts2.dmi'
+	icon_state = "lazarusbelt_0"
+	item_state = "lazbelt"
+	storage_slots = 6
+	w_class = WEIGHT_CLASS_BULKY
+	can_hold = list(
+		/obj/item/device/mobcapsule,
+		/obj/item/lazarus_injector)
+
+/obj/item/storage/belt/lazarus/New()
+	..()
+	update_icon()
+
+
+/obj/item/storage/belt/lazarus/update_icon()
+	..()
+	icon_state = "lazarusbelt_[contents.len]"
+
+/obj/item/storage/belt/lazarus/attackby(obj/item/W, mob/user)
+	var/amount = contents.len
+	. = ..()
+	if(amount != contents.len)
+		update_icon()
+
+/obj/item/storage/belt/lazarus/remove_from_storage(obj/item/W as obj, atom/new_location)
+	..()
+	update_icon()
+
+
+/obj/item/storage/belt/lazarus/antag
+	icon_state = "lazarusbelt_6"
+
+/obj/item/storage/belt/lazarus/antag/New(loc, mob/user)
+	var/blocked = list()
+	var/list/critters = subtypesof(/mob/living/simple_animal/hostile) - blocked // list of possible hostile mobs
+	critters = shuffle(critters)
+	while(contents.len < 6)
+		var/mob/living/simple_animal/hostile/chosen = pick(critters)
+		critters -= chosen
+		if(initial(chosen.gold_core_spawnable) != HOSTILE_SPAWN)
+			continue
+
+		var/obj/item/device/mobcapsule/MC = new /obj/item/device/mobcapsule(src)
+		var/mob/living/simple_animal/hostile/NM = new chosen(MC)
+		NM.faction |= list("lazarus", "[REF(user)]")
+		NM.friends += user
+		NM.robust_searching = 1
+		NM.attack_same = 0
+		MC.insert(NM)
+	..()
