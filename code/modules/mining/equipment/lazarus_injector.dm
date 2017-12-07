@@ -30,10 +30,10 @@
 				if(ishostile(target))
 					var/mob/living/simple_animal/hostile/H = M
 					H.attack_same = 0
+					H.friends += user
+					H.robust_searching = 1
 					if(malfunctioning)
 						H.faction |= list("lazarus", "[REF(user)]")
-						H.robust_searching = 1
-						H.friends += user
 						log_game("[user] has revived hostile mob [target] with a malfunctioning lazarus injector")
 					else
 						H.faction |= list("neutral")
@@ -74,7 +74,7 @@
 	icon = 'icons/obj/mobcap.dmi'
 	icon_state = "mobcap0"
 	w_class = WEIGHT_CLASS_SMALL
-	throwforce = 00
+	throwforce = 50
 	throw_speed = 4
 	throw_range = 20
 	force = 0
@@ -143,7 +143,10 @@
 	..()
 
 /obj/item/device/mobcapsule/attackby(obj/item/W, mob/user, params)
-	if(contained_mob != null && istype(W, /obj/item/pen))
+	if(!contained_mob)
+		return
+
+	if(istype(W, /obj/item/pen))
 		if(user != capsuleowner)
 			to_chat(user, "<span class='warning'>\The [src] briefly flashes an error.</span>")
 			return 0
@@ -153,6 +156,9 @@
 				contained_mob.name = mname
 				to_chat(user, "<span class='notice'>Renaming successful, say hello to [contained_mob]!</span>")
 				name = "[base_name] - [mname]"
+	else if(istype(W, /obj/item/device/healthanalyzer))
+		var/obj/item/device/healthanalyzer/HA = W
+		healthscan(user, contained_mob, HA.mode, HA.advanced)
 	..()
 
 /obj/item/device/mobcapsule/attack_self(mob/user)
