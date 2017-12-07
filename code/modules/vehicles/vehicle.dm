@@ -12,6 +12,7 @@
 	armor = list(melee = 30, bullet = 30, laser = 30, energy = 0, bomb = 30, bio = 0, rad = 0, fire = 60, acid = 60)
 	var/auto_door_open = TRUE
 	var/view_range = 7
+	var/datum/gas_mixture/cabin_air
 	var/datum/riding/riding_datum = null
 
 	var/mob/living/carbon/human/rider = null
@@ -19,6 +20,7 @@
 	var/list/actions_types
 	var/in_bump = 0
 	var/sealed_cabin = 0
+	var/air_recycling = 0
 	var/rider_visible =	1
 	var/list/ability_buttons = new/list()
 	var/throw_dropped_items_overboard = 0 // See /mob/proc/drop_item() in mob.dm.
@@ -41,6 +43,15 @@ obj/vehicle/proc/eject_rider(var/crashed, var/selfdismount)
 	rider.forceMove(src.loc)
 	rider = null
 	return
+
+/obj/vehicle/proc/add_cabin()
+	cabin_air = new
+	cabin_air.temperature = T20C
+	cabin_air.volume = 200
+	cabin_air.add_gases(/datum/gas/oxygen, /datum/gas/nitrogen)
+	cabin_air.gases[/datum/gas/oxygen][MOLES] = O2STANDARD*cabin_air.volume/(R_IDEAL_GAS_EQUATION*cabin_air.temperature)
+	cabin_air.gases[/datum/gas/nitrogen][MOLES] = N2STANDARD*cabin_air.volume/(R_IDEAL_GAS_EQUATION*cabin_air.temperature)
+	return cabin_air
 
 obj/vehicle/ex_act(severity)
 	switch(severity)
@@ -72,6 +83,7 @@ obj/vehicle/ex_act(severity)
 				return
 		else
 	return
+
 
 obj/vehicle/proc/Stopped()
 		return

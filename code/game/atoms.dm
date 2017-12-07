@@ -91,6 +91,9 @@
 /atom/proc/ComponentInitialize()
 	return
 
+/atom/proc/Scale(var/scalex = 1, var/scaley = 1)
+	src.transform = matrix(src.transform, scalex, scaley, MATRIX_SCALE)
+
 /atom/Destroy()
 	if(alternate_appearances)
 		for(var/K in alternate_appearances)
