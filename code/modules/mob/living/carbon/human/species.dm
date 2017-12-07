@@ -1456,6 +1456,11 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	if(istype(H.loc, /obj/machinery/atmospherics/components/unary/cryo_cell))
 		return
 
+	if(istype(H.loc, /obj/vehicle))
+		var/obj/vehicle/V = H.loc
+		if (V.sealed_cabin)
+			return
+
 	var/loc_temp = H.get_temperature(environment)
 
 	//Body temperature is adjusted in two steps. First, your body tries to stabilize itself a bit.

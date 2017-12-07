@@ -1234,6 +1234,13 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	item = /obj/item/storage/box/hug/reverse_revolver
 	restricted_roles = list("Clown")
 
+/datum/uplink_item/role_restricted/clown_car
+	name = "Clown Car"
+	desc = "A funny-looking car designed for circus events. Seats 30, very roomy!"
+	cost = 5
+	item = /obj/vehicle/clowncar
+	restricted_roles = list("Clown")
+
 /datum/uplink_item/role_restricted/mimery
 	name = "Guide to Advanced Mimery Series"
 	desc = "The classical two part series on how to further hone your mime skills. Upon studying the series, the user should be able to make 3x1 invisible walls, and shoot bullets out of their fingers. Obviously only works for Mimes."
