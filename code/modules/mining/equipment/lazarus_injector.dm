@@ -69,6 +69,7 @@
 
 /obj/item/device/mobcapsule
 	name = "lazarus capsule"
+	var/base_name = "lazarus capsule"
 	desc = "It allows you to store and deploy lazarus-injected creatures easier."
 	icon = 'icons/obj/mobcap.dmi'
 	icon_state = "mobcap0"
@@ -79,10 +80,52 @@
 	force = 0
 	materials = list(MAT_METAL = 100)
 	var/storage_capacity = 1
-	var/mob/living/capsuleowner = null
 	var/tripped = 0
 	var/colorindex = 0
+
+	var/mob/living/capsuleowner = null
 	var/mob/contained_mob
+
+	var/template_id = "capsule_regular"
+	var/datum/map_template/mobcapsule/template
+	var/turf/interior_location
+	var/obj/machinery/computer/camera_advanced/mobcapsule/capsule_monitor
+
+/obj/item/device/mobcapsule/New(var/loc)
+	. = ..()
+	create_interior()
+
+/obj/item/device/mobcapsule/proc/get_template()
+	if(template)
+		return
+	template = SSmapping.capsule_templates[template_id]
+	if(!template)
+		throw EXCEPTION("Capsule template ([template_id]) not found!")
+		qdel(src)
+
+/obj/item/device/mobcapsule/proc/create_interior()
+	get_template()
+
+	for(var/i = 0; i <= 20; i++) // 20 tries
+		var/width_border = TRANSITIONEDGE + round(template.width / 2)
+		var/height_border = TRANSITIONEDGE + round(template.height / 2)
+		var/z_level = ZLEVEL_BLUESPACE
+		var/turf/T = locate(rand(width_border, world.maxx - width_border), rand(height_border, world.maxy - height_border), z_level)
+		var/valid = TRUE
+
+		for(var/turf/check in template.get_affected_turfs(T, 1))
+			var/area/new_area = get_area(check)
+			if(!istype(new_area, /area/space))
+				valid = FALSE
+				break
+
+		if(valid)
+			template.load(T, 1)
+			log_world("Lazarus capsule interior placed at ([T.x], [T.y], [T.z])")
+			interior_location = T
+			return
+
+	throw EXCEPTION("COULD NOT PLACE CAPSULE INTERIOR")
 
 /obj/item/device/mobcapsule/attackby(obj/item/W, mob/user, params)
 	if(contained_mob != null && istype(W, /obj/item/pen))
@@ -94,7 +137,7 @@
 			if(mname)
 				contained_mob.name = mname
 				to_chat(user, "<span class='notice'>Renaming successful, say hello to [contained_mob]!</span>")
-				name = "lazarus capsule - [mname]"
+				name = "[base_name] - [mname]"
 	..()
 
 /obj/item/device/mobcapsule/attack_self(mob/user)
@@ -128,11 +171,8 @@
 		//user.attack_log += "\[[time_stamp()]\] Released hostile mob <b>[contained_mob]</b> in area [turf.loc] ([x],[y],[z])."
 		//msg_admin_attack("[key_name(user)] has released hostile mob [contained_mob] with a capsule in area [turf.loc] ([x],[y],[z]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</A>).")
 
-		if(contained_mob.client)
-			contained_mob.client.eye = contained_mob.client.mob
-			contained_mob.client.perspective = MOB_PERSPECTIVE
 		contained_mob = null
-		name = "lazarus capsule"
+		name = base_name
 
 /obj/item/device/mobcapsule/proc/take_contents(atom/target, mob/user)
 	var/mob/living/simple_animal/AM = target
@@ -142,25 +182,34 @@
 		if(istype(H))
 			for(var/things in H.friends)
 				if(capsuleowner in H.friends)
-					if(insert(AM, user) == -1) //Limit reached
+					if(insert(AM) == -1) //Limit reached
 						break
 
-/obj/item/device/mobcapsule/proc/insert(var/atom/movable/AM, mob/user)
+/obj/item/device/mobcapsule/proc/insert(atom/movable/AM)
 	if(contained_mob)
 		return -1
 
 	if(istype(AM, /mob/living))
-		var/mob/living/L = AM
-		//if(L.locked_to)
-			//return 0
-		if(L.client)
-			L.client.perspective = EYE_PERSPECTIVE
-			L.client.eye = src
 	else if(!istype(AM, /obj/item) && !istype(AM, /obj/effect/dummy/chameleon))
 		return 0
 	else if(AM.density || AM.anchored)
 		return 0
-	AM.forceMove(src)
+	AM.forceMove(interior_location)
 	contained_mob = AM
 	name = "lazarus capsule - [AM.name]"
 	return 1
+
+/obj/item/device/mobcapsule/masterball
+	name = "Master Ball"
+	base_name = "Master Ball"
+	desc = "A legendary capsule that allows you to store and deploy ANY type of creature."
+
+/obj/item/device/mobcapsule/masterball/throw_impact(atom/movable/target, datum/thrownthing/throwinfo)
+	if(!tripped)
+		if(contained_mob)
+			dump_contents(throwinfo.thrower)
+			tripped = 1
+		else
+			insert(target)
+			tripped = 1
+	..()
