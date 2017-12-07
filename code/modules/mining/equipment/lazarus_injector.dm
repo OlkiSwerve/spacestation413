@@ -72,9 +72,9 @@
 	var/base_name = "lazarus capsule"
 	desc = "It allows you to store and deploy lazarus-injected creatures easier."
 	icon = 'icons/obj/mobcap.dmi'
-	icon_state = "mobcap0"
+	icon_state = "mobcap0_empty"
 	w_class = WEIGHT_CLASS_SMALL
-	throwforce = 50
+	throwforce = 0
 	throw_speed = 4
 	throw_range = 20
 	force = 0
@@ -90,10 +90,6 @@
 	var/datum/map_template/mobcapsule/template
 	var/turf/interior_location
 	var/obj/machinery/computer/security/mobcapsule/capsule_monitor
-
-/obj/item/device/mobcapsule/New(var/loc)
-	. = ..()
-	create_interior()
 
 /obj/item/device/mobcapsule/proc/get_template()
 	if(template)
@@ -120,7 +116,7 @@
 				break
 
 		if(valid)
-			template.load(T, 1)
+			template.load(T, centered = TRUE) // HERE
 			log_world("Lazarus capsule interior placed at ([T.x], [T.y], [T.z])")
 			interior_location = T
 
@@ -137,10 +133,13 @@
 	throw EXCEPTION("COULD NOT PLACE CAPSULE INTERIOR")
 
 /obj/item/device/mobcapsule/Destroy()
+	template = null
 	if(contained_mob)
 		dump_contents()
 		new /obj/effect/particle_effect/smoke(get_turf(src))
-	..()
+	if(interior_location)
+		qdel(interior_location.loc)
+	. = ..()
 
 /obj/item/device/mobcapsule/attackby(obj/item/W, mob/user, params)
 	if(!contained_mob)
@@ -224,6 +223,10 @@
 		return 0
 	else if(AM.density || AM.anchored)
 		return 0
+
+	if(!interior_location)
+		create_interior()
+
 	AM.forceMove(interior_location)
 	contained_mob = AM
 	name = "[base_name] - [AM.name]"
