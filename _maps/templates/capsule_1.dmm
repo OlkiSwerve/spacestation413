@@ -1,5 +1,5 @@
 "a" = (/turf/closed/indestructible,/area/mobcapsule)
-"b" = (/obj/machinery/computer/camera_advanced/mobcapsule,/turf/closed/indestructible,/area/mobcapsule)
+"b" = (/obj/machinery/computer/security/mobcapsule,/turf/closed/indestructible,/area/mobcapsule)
 "c" = (/obj/machinery/computer/arcade,/turf/open/indestructible,/area/mobcapsule)
 "d" = (/turf/open/indestructible,/area/mobcapsule)
 "e" = (/obj/item/twohanded/required/kirbyplants/random,/turf/open/indestructible,/area/mobcapsule)

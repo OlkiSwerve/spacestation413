@@ -89,7 +89,7 @@
 	var/template_id = "capsule_regular"
 	var/datum/map_template/mobcapsule/template
 	var/turf/interior_location
-	var/obj/machinery/computer/camera_advanced/mobcapsule/capsule_monitor
+	var/obj/machinery/computer/security/mobcapsule/capsule_monitor
 
 /obj/item/device/mobcapsule/New(var/loc)
 	. = ..()
@@ -123,6 +123,15 @@
 			template.load(T, 1)
 			log_world("Lazarus capsule interior placed at ([T.x], [T.y], [T.z])")
 			interior_location = T
+
+			for(var/object in T.loc.contents)
+				if(istype(object, /obj/machinery/computer/security/mobcapsule))
+					capsule_monitor = object
+					capsule_monitor.capsule = src
+
+			if(!capsule_monitor)
+				throw EXCEPTION("could not find monitor inside capsule!")
+
 			return
 
 	throw EXCEPTION("COULD NOT PLACE CAPSULE INTERIOR")
