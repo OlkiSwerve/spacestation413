@@ -30,10 +30,10 @@
 				if(ishostile(target))
 					var/mob/living/simple_animal/hostile/H = M
 					H.attack_same = 0
+					H.friends += user
+					H.robust_searching = 1
 					if(malfunctioning)
 						H.faction |= list("lazarus", "[REF(user)]")
-						H.robust_searching = 1
-						H.friends += user
 						log_game("[user] has revived hostile mob [target] with a malfunctioning lazarus injector")
 					else
 						H.faction |= list("neutral")
@@ -74,7 +74,7 @@
 	icon = 'icons/obj/mobcap.dmi'
 	icon_state = "mobcap0"
 	w_class = WEIGHT_CLASS_SMALL
-	throwforce = 00
+	throwforce = 50
 	throw_speed = 4
 	throw_range = 20
 	force = 0
