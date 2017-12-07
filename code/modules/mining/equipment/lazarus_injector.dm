@@ -136,6 +136,12 @@
 
 	throw EXCEPTION("COULD NOT PLACE CAPSULE INTERIOR")
 
+/obj/item/device/mobcapsule/Destroy()
+	if(contained_mob)
+		dump_contents()
+		new /obj/effect/particle_effect/smoke(get_turf(src))
+	..()
+
 /obj/item/device/mobcapsule/attackby(obj/item/W, mob/user, params)
 	if(contained_mob != null && istype(W, /obj/item/pen))
 		if(user != capsuleowner)
@@ -153,8 +159,13 @@
 	colorindex += 1
 	if(colorindex >= 6)
 		colorindex = 0
-	icon_state = "mobcap[colorindex]"
 	update_icon()
+
+/obj/item/device/mobcapsule/update_icon()
+	icon_state = "mobcap[colorindex]"
+	if(!contained_mob)
+		icon_state = "[icon_state]_empty"
+	..()
 
 /obj/item/device/mobcapsule/pickup(mob/user)
 	tripped = 0
@@ -172,9 +183,9 @@
 
 /obj/item/device/mobcapsule/proc/dump_contents(mob/user)
 	if(contained_mob)
-		contained_mob.forceMove(src.loc)
-
 		var/turf/turf = get_turf(src)
+		contained_mob.forceMove(turf)
+
 		log_attack("[key_name(user)] has released hostile mob [contained_mob] with a capsule in area [turf.loc] ([x],[y],[z]).")
 		//contained_mob.attack_log += "\[[time_stamp()]\] Released by <b>[key_name(user)]</b> in area [turf.loc] ([x],[y],[z])."
 		//user.attack_log += "\[[time_stamp()]\] Released hostile mob <b>[contained_mob]</b> in area [turf.loc] ([x],[y],[z])."
@@ -182,6 +193,7 @@
 
 		contained_mob = null
 		name = base_name
+		update_icon()
 
 /obj/item/device/mobcapsule/proc/take_contents(atom/target, mob/user)
 	var/mob/living/simple_animal/AM = target
@@ -209,7 +221,37 @@
 	AM.forceMove(interior_location)
 	contained_mob = AM
 	name = "[base_name] - [AM.name]"
+	update_icon()
 	return 1
+
+/obj/item/device/mobcapsule/proc/fill_random(mob/living/owner, friendly = 1)
+	if(contained_mob)
+		return
+
+	var/static/blocked = list()
+	var/static/list/critters // list of possible hostile mobs
+
+	if(!critters)
+		critters = subtypesof(/mob/living/simple_animal/hostile) - blocked
+		critters = shuffle(critters)
+
+	var/mob/living/simple_animal/hostile/chosen
+	do
+		chosen = pick(critters)
+	while(initial(chosen.gold_core_spawnable) != HOSTILE_SPAWN)
+
+	var/mob/living/simple_animal/hostile/NM = new chosen(src)
+
+	NM.attack_same = 0
+	if(!friendly)
+		NM.faction |= list("lazarus", "[REF(owner)]")
+		NM.robust_searching = 1
+		NM.friends += owner
+	else
+		NM.faction |= list("neutral")
+
+	insert(NM)
+	capsuleowner = owner
 
 /obj/item/device/mobcapsule/masterball
 	name = "\improper Master Capsule"
