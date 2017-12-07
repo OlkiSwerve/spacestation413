@@ -6,8 +6,8 @@
 "f" = (/obj/machinery/light{dir = 8},/turf/open/indestructible,/area/mobcapsule)
 "g" = (/obj/structure/fans/tiny,/turf/open/indestructible,/area/mobcapsule)
 "h" = (/obj/machinery/light{dir = 4},/turf/open/indestructible,/area/mobcapsule)
-"i" = (/obj/machinery/sleeper{dir = 4; step_x = 0; step_y = 3},/turf/open/indestructible,/area/mobcapsule)
-"j" = (/obj/structure/chair/comfy/brown{dir = 1; step_y = 1},/turf/open/indestructible,/area/mobcapsule)
+"i" = (/obj/machinery/sleeper{dir = 4},/turf/open/indestructible,/area/mobcapsule)
+"j" = (/obj/structure/chair/comfy/brown{dir = 1},/turf/open/indestructible,/area/mobcapsule)
 "k" = (/obj/structure/closet,/turf/open/indestructible,/area/mobcapsule)
 
 (1,1,1) = {"
