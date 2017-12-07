@@ -143,7 +143,10 @@
 	..()
 
 /obj/item/device/mobcapsule/attackby(obj/item/W, mob/user, params)
-	if(contained_mob != null && istype(W, /obj/item/pen))
+	if(!contained_mob)
+		return
+
+	if(istype(W, /obj/item/pen))
 		if(user != capsuleowner)
 			to_chat(user, "<span class='warning'>\The [src] briefly flashes an error.</span>")
 			return 0
@@ -153,6 +156,9 @@
 				contained_mob.name = mname
 				to_chat(user, "<span class='notice'>Renaming successful, say hello to [contained_mob]!</span>")
 				name = "[base_name] - [mname]"
+	else if(istype(W, /obj/item/device/healthanalyzer))
+		var/obj/item/device/healthanalyzer/HA = W
+		healthscan(user, contained_mob, HA.mode, HA.advanced)
 	..()
 
 /obj/item/device/mobcapsule/attack_self(mob/user)
