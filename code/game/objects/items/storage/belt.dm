@@ -573,20 +573,11 @@
 	icon_state = "lazarusbelt_6"
 
 /obj/item/storage/belt/lazarus/antag/New(loc, mob/user)
-	var/blocked = list()
-	var/list/critters = subtypesof(/mob/living/simple_animal/hostile) - blocked // list of possible hostile mobs
-	critters = shuffle(critters)
+	var/i = 0
 	while(contents.len < 6)
-		var/mob/living/simple_animal/hostile/chosen = pick(critters)
-		critters -= chosen
-		if(initial(chosen.gold_core_spawnable) != HOSTILE_SPAWN)
-			continue
-
 		var/obj/item/device/mobcapsule/MC = new /obj/item/device/mobcapsule(src)
-		var/mob/living/simple_animal/hostile/NM = new chosen(MC)
-		NM.faction |= list("lazarus", "[REF(user)]")
-		NM.friends += user
-		NM.robust_searching = 1
-		NM.attack_same = 0
-		MC.insert(NM)
+		MC.fill_random(user, friendly=0)
+		MC.colorindex = i
+		MC.update_icon()
+		++i
 	..()
