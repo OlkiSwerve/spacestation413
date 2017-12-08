@@ -1,6 +1,6 @@
 /obj/item/organ/horns
 	name = "horns"
-	desc = "uh"
+	desc = "Whoever these belonged to must be feeling a lot less horny now."
 	zone = "head"
 	slot = ORGAN_SLOT_HORNS
 	gender = PLURAL
