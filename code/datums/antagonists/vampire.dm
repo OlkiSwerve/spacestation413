@@ -10,6 +10,10 @@
 /datum/antagonist/vampire/on_gain()
 	register()
 	grant_powers(owner)
+	if(ishuman(owner.current))
+		var/mob/living/carbon/human/H = owner.current
+		H.dna.species.disliked_food ^= BLOOD
+		H.dna.species.liked_food |= BLOOD
 	if(give_objectives)
 		forge_objectives(owner)
 	greet_vampire()
@@ -40,6 +44,7 @@
 	verbs += /client/proc/vampire_hypnotise
 	verbs += /client/proc/vampire_glare
 	verbs += /client/proc/vampire_bite
+	verbs += /client/proc/vampire_spawnglass
 	//testing purposes REMOVE BEFORE PUSH TO MASTER
 	/*for(var/handler in typesof(/client/proc))
 		if(findtext("[handler]","vampire_"))
@@ -89,6 +94,10 @@
 /datum/antagonist/vampire/on_removal()
 	unregister()
 	owner.objectives -= objectives
+	if(ishuman(owner.current))
+		var/mob/living/carbon/human/H = owner.current
+		H.dna.species.liked_food ^= BLOOD
+		H.dna.species.disliked_food |= BLOOD
 	owner.current.remove_vampire_powers()
 	owner.current.remove_vampire_vision()
 
