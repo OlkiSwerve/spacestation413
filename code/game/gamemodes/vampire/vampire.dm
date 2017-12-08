@@ -225,27 +225,29 @@
 			to_chat(src, "<span class='warning'>Not a drop of blood here.</span>")
 			src.mind.vampire.draining = null
 			return 0
-		if(!H.mind)
+		/*if(!H.mind)
 			to_chat(src, "<span class='warning'>This blood is lifeless and has no power.</span>")
 			src.mind.vampire.draining = null
-			return 0
+			return 0*/
 		bloodtotal = src.mind.vampire.bloodtotal
 		bloodusable = src.mind.vampire.bloodusable
 		if(H.blood_volume == 0)
 			to_chat(src, "<span class='warning'>They've got no blood left to give.</span>")
 			break
-		if(H.stat < 3) //alive
-			blood = min(15, H.vessel.get_reagent_amount("blood"))// if they have less than 10 blood, give them the remnant else they get 10 blood
+		if(H.stat != DEAD) //alive
+			blood = min(15, H.blood_volume)// if they have less than 10 blood, give them the remnant else they get 10 blood
 			src.mind.vampire.bloodtotal += blood
 			src.mind.vampire.bloodusable += blood
 			H.adjustCloneLoss(10) // beep boop 10 damage
 		else
-			blood = min(7, H.vessel.get_reagent_amount("blood"))// The dead only give 5 bloods
+			blood = min(7, H.blood_volume)// The dead only give 5 bloods
 			src.mind.vampire.bloodtotal += blood
 		if(bloodtotal != src.mind.vampire.bloodtotal)
 			to_chat(src, "<span class='notice'>You have accumulated [src.mind.vampire.bloodtotal] [src.mind.vampire.bloodtotal > 1 ? "units" : "unit"] of blood[src.mind.vampire.bloodusable != bloodusable ?", and have [src.mind.vampire.bloodusable] left to use" : "."]</span>")
 		check_vampire_upgrade(mind)
-		H.vessel.remove_reagent("blood", 30)
+		H.blood_volume = max(H.blood_volume - 30, 0)
+		message_admins("[H.name]s blood volume is now [H.blood_volume]")
+		log_admin("[H.name]s blood volume is now [H.blood_volume]")
 
 	src.mind.vampire.draining = null
 	to_chat(src, "<span class='notice'>You stop draining [H.name] of blood.</span>")
