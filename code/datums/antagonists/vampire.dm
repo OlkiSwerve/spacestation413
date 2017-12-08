@@ -26,13 +26,9 @@
 /datum/antagonist/vampire/proc/grant_powers(mob/living/carbon/vampire_mob)
 	/*if(!istype(vampire_mob))
 		return*/
-	message_admins("granting powers")
-	log_admin("granting powers")
 	owner.current.make_vampire()
 
 /mob/living/proc/make_vampire()
-	message_admins("making vampire")
-	log_admin("making vampire")
 	if(!mind)
 		return
 	if(!mind.vampire)
