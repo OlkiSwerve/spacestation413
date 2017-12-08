@@ -225,10 +225,10 @@
 			to_chat(src, "<span class='warning'>Not a drop of blood here.</span>")
 			src.mind.vampire.draining = null
 			return 0
-		/*if(!H.mind)
+		if(!H.mind)
 			to_chat(src, "<span class='warning'>This blood is lifeless and has no power.</span>")
 			src.mind.vampire.draining = null
-			return 0*/
+			return 0
 		bloodtotal = src.mind.vampire.bloodtotal
 		bloodusable = src.mind.vampire.bloodusable
 		if(H.blood_volume == 0)
@@ -246,8 +246,6 @@
 			to_chat(src, "<span class='notice'>You have accumulated [src.mind.vampire.bloodtotal] [src.mind.vampire.bloodtotal > 1 ? "units" : "unit"] of blood[src.mind.vampire.bloodusable != bloodusable ?", and have [src.mind.vampire.bloodusable] left to use" : "."]</span>")
 		check_vampire_upgrade(mind)
 		H.blood_volume = max(H.blood_volume - 30, 0)
-		message_admins("[H.name]s blood volume is now [H.blood_volume]")
-		log_admin("[H.name]s blood volume is now [H.blood_volume]")
 
 	src.mind.vampire.draining = null
 	to_chat(src, "<span class='notice'>You stop draining [H.name] of blood.</span>")

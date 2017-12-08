@@ -702,8 +702,6 @@
 	mind.current.update_sight()
 
 /mob/proc/remove_vampire_vision()
-	log_admin("removing vision")
-	message_admins("removing vision")
 
 	var/obj/item/organ/eyes/E = mind.current.getorganslot(ORGAN_SLOT_EYES)
 	E.sight_flags = 0
