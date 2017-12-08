@@ -46,6 +46,8 @@
 #define BODYPART_ORGANIC   1
 #define BODYPART_ROBOTIC   2
 
+#define BROKEN   1
+
 #define DEFAULT_BODYPART_ICON_ORGANIC 'icons/mob/human_parts_greyscale.dmi'
 #define DEFAULT_BODYPART_ICON_ROBOTIC 'icons/mob/augmentation/augments.dmi'
 

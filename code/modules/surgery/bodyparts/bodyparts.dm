@@ -35,6 +35,13 @@
 	var/animal_origin = null //for nonhuman bodypart (e.g. monkey)
 	var/dismemberable = 1 //whether it can be dismembered with a weapon.
 
+	//Baymed code
+	var/min_broken_damage = 30
+	var/broken_description
+	var/tmp/perma_injury = 0
+	var/damagestatus
+	var/list/fracture_sound = list('sound/effects/bonebreak1.ogg','sound/effects/bonebreak2.ogg','sound/effects/bonebreak3.ogg','sound/effects/bonebreak4.ogg')
+
 	var/px_x = 0
 	var/px_y = 0
 
@@ -50,6 +57,8 @@
 
 /obj/item/bodypart/blob_act()
 	take_damage(max_damage)
+
+
 
 /obj/item/bodypart/Destroy()
 	if(owner)
@@ -182,6 +191,40 @@
 	return 0
 
 
+/obj/item/bodypart/proc/fracture()
+	if(damagestatus & BROKEN)
+		return
+
+	to_chat(owner, "<span class='danger'>[pick("You hear a loud cracking sound coming from \the [name].</span>", \
+	"<span class='danger'>Something feels like it shattered in your [name]!</span>", \
+	"<span class='danger'>You hear a sickening crack.")]</span>")
+	owner.emote("scream")
+
+	playsound(owner.loc, pick(fracture_sound), 50, 1, -2)
+	damagestatus ^= BROKEN
+	broken_description = pick("broken", "fracture", "hairline fracture")
+	perma_injury = brute_dam
+
+	//Fractures have a chance of getting you out of restraints
+	if(prob(25))
+		release_restraints()
+
+
+/obj/item/bodypart/proc/release_restraints()
+	if(owner.handcuffed && body_part in list(ARM_LEFT, ARM_RIGHT, HAND_LEFT, HAND_RIGHT))
+		owner.visible_message(\
+			"\The [owner.handcuffed.name] falls off of [owner.name].",\
+			"\The [owner.handcuffed.name] falls off you.")
+
+		owner.handcuffed = null
+		owner.update_handcuffed()
+
+	if(owner.legcuffed && body_part in list(FOOT_LEFT, FOOT_RIGHT, LEG_LEFT, LEG_RIGHT))
+		owner.visible_message("\The [owner.legcuffed.name] falls off of [owner].", \
+		"\The [owner.legcuffed.name] falls off you.")
+
+		owner.legcuffed = null
+		owner.update_inv_legcuffed()
 
 //Change organ status
 /obj/item/bodypart/proc/change_bodypart_status(new_limb_status, heal_limb, change_icon_to_default)
