@@ -55,7 +55,7 @@
 
 	var/bubble_icon = "default" //what icon the mob uses for speechbubbles
 
-	var/last_bumped = 0
+	//var/last_bumped = 0
 	var/unique_name = 0 //if a mob's name should be appended with an id when created e.g. Mob (666)
 
 	var/list/butcher_results = null
@@ -79,3 +79,5 @@
 	var/last_words	//used for database logging
 
 	var/list/obj/effect/proc_holder/abilities = list()
+
+	var/list/callOnLife = list()

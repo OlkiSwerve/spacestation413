@@ -15,6 +15,7 @@
 		to_chat(src, "<span class='warning'>The blood soaks through your bandage.</span>")
 
 
+
 /mob/living/carbon/monkey/handle_blood()
 	if(bodytemperature >= 225 && !(disabilities & NOCLONE)) //cryosleep or husked people do not pump the blood.
 		//Blood regeneration if there is some space

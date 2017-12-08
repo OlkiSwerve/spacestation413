@@ -31,6 +31,9 @@
 	var/datum/proximity_monitor/proximity_monitor
 	var/buckle_message_cooldown = 0
 
+
+	var/last_bumped = 0
+
 /atom/New(loc, ...)
 	//atom creation method that preloads variables at creation
 	if(GLOB.use_preloader && (src.type == GLOB._preloader.target_path))//in case the instanciated atom is creating other atoms in New()
@@ -87,6 +90,9 @@
 // Put your AddComponent() calls here
 /atom/proc/ComponentInitialize()
 	return
+
+/atom/proc/Scale(var/scalex = 1, var/scaley = 1)
+	src.transform = matrix(src.transform, scalex, scaley, MATRIX_SCALE)
 
 /atom/Destroy()
 	if(alternate_appearances)
@@ -196,6 +202,18 @@
 	set waitfor = FALSE
 	return
 
+/atom/proc/Bumped(AM as mob|obj)
+	return
+
+/atom/movable/Bump(var/atom/A as mob|obj|turf|area, yes)
+	spawn( 0 )
+		if ((A && yes)) //wtf
+			A.last_bumped = world.timeofday
+			A.Bumped(src)
+		return
+	..()
+	return
+
 // Convenience proc to see if a container is open for chemistry handling
 // returns true if open
 // false if closed
@@ -257,8 +275,6 @@
 
 	if(desc)
 		to_chat(user, desc)
-	// *****RM
-	//to_chat(user, "[name]: Dn:[density] dir:[dir] cont:[contents] icon:[icon] is:[icon_state] loc:[loc]")
 
 	if(reagents && (is_open_container() || is_transparent())) //is_open_container() isn't really the right proc for this, but w/e
 		to_chat(user, "It contains:")
@@ -490,22 +506,6 @@ mob/living/carbon/human/get_blood_dna_list()
 
 /atom/proc/wash_cream()
 	return 1
-
-/atom/proc/get_global_map_pos()
-	if(!islist(GLOB.global_map) || isemptylist(GLOB.global_map))
-		return
-	var/cur_x = null
-	var/cur_y = null
-	var/list/y_arr = null
-	for(cur_x=1,cur_x<=GLOB.global_map.len,cur_x++)
-		y_arr = GLOB.global_map[cur_x]
-		cur_y = y_arr.Find(src.z)
-		if(cur_y)
-			break
-	if(cur_x && cur_y)
-		return list("x"=cur_x,"y"=cur_y)
-	else
-		return 0
 
 /atom/proc/isinspace()
 	if(isspaceturf(get_turf(src)))

@@ -17,6 +17,7 @@ SUBSYSTEM_DEF(mapping)
 
 	var/list/shuttle_templates = list()
 	var/list/shelter_templates = list()
+	var/list/capsule_templates = list()
 
 	var/list/areas_in_z = list()
 
@@ -52,7 +53,7 @@ SUBSYSTEM_DEF(mapping)
 	var/space_zlevels = list()
 	for(var/i in ZLEVEL_SPACEMIN to ZLEVEL_SPACEMAX)
 		switch(i)
-			if(ZLEVEL_MINING, ZLEVEL_LAVALAND, ZLEVEL_EMPTY_SPACE, ZLEVEL_TRANSIT, ZLEVEL_CITYOFCOGS)
+			if(ZLEVEL_MINING, ZLEVEL_LAVALAND, ZLEVEL_EMPTY_SPACE, ZLEVEL_TRANSIT, ZLEVEL_CITYOFCOGS, ZLEVEL_BLUESPACE)
 				continue
 			else
 				space_zlevels += i
@@ -62,6 +63,7 @@ SUBSYSTEM_DEF(mapping)
 	repopulate_sorted_areas()
 	// Set up Z-level transistions.
 	setup_map_transitions()
+	generate_station_area_list()
 	..()
 
 /* Nuke threats, for making the blue tiles on the station go RED
@@ -139,6 +141,19 @@ SUBSYSTEM_DEF(mapping)
 		INIT_ANNOUNCE(msg)
 #undef INIT_ANNOUNCE
 
+GLOBAL_LIST_EMPTY(the_station_areas)
+
+/datum/controller/subsystem/mapping/proc/generate_station_area_list()
+	var/list/station_areas_blacklist = typecacheof(list(/area/space, /area/mine, /area/ruin))
+	for(var/area/A in world)
+		var/turf/picked = safepick(get_area_turfs(A.type))
+		if(picked && (picked.z in GLOB.station_z_levels))
+			if(!(A.type in GLOB.the_station_areas) && !is_type_in_typecache(A, station_areas_blacklist))
+				GLOB.the_station_areas.Add(A.type)
+
+	if(!GLOB.the_station_areas.len)
+		log_world("ERROR: Station areas list failed to generate!")
+
 /datum/controller/subsystem/mapping/proc/maprotate()
 	var/players = GLOB.clients.len
 	var/list/mapvotes = list()
@@ -207,6 +222,7 @@ SUBSYSTEM_DEF(mapping)
 	preloadRuinTemplates()
 	preloadShuttleTemplates()
 	preloadShelterTemplates()
+	preloadCapsuleTemplates()
 
 /datum/controller/subsystem/mapping/proc/preloadRuinTemplates()
 	// Still supporting bans by filename
@@ -255,3 +271,13 @@ SUBSYSTEM_DEF(mapping)
 
 		shelter_templates[S.shelter_id] = S
 		map_templates[S.shelter_id] = S
+
+/datum/controller/subsystem/mapping/proc/preloadCapsuleTemplates()
+	for(var/item in subtypesof(/datum/map_template/mobcapsule))
+		var/datum/map_template/mobcapsule/capsule_type = item
+		if(!(initial(capsule_type.mappath)))
+			continue
+		var/datum/map_template/mobcapsule/S = new capsule_type()
+
+		capsule_templates[S.capsule_id] = S
+		map_templates[S.capsule_id] = S

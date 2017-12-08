@@ -68,6 +68,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 	var/obj/item/organ/brain/mutant_brain = /obj/item/organ/brain
 	var/obj/item/organ/heart/mutant_heart = /obj/item/organ/heart
+	var/obj/item/organ/butt/mutant_butt = /obj/item/organ/butt
 	var/obj/item/organ/eyes/mutanteyes = /obj/item/organ/eyes
 	var/obj/item/organ/ears/mutantears = /obj/item/organ/ears
 	var/obj/item/mutanthands
@@ -143,8 +144,10 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	var/obj/item/organ/liver/liver = C.getorganslot(ORGAN_SLOT_LIVER)
 	var/obj/item/organ/stomach/stomach = C.getorganslot(ORGAN_SLOT_STOMACH)
 	var/obj/item/organ/tail/tail = C.getorganslot(ORGAN_SLOT_TAIL)
+	var/obj/item/organ/butt/butt = C.getorganslot(ORGAN_SLOT_BUTT)
 
 	var/should_have_brain = TRUE
+	var/should_have_butt = TRUE
 	var/should_have_heart = !(NOBLOOD in species_traits)
 	var/should_have_lungs = !(NOBREATH in species_traits)
 	var/should_have_appendix = !(NOHUNGER in species_traits)
@@ -162,6 +165,13 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	if(should_have_brain && !brain)
 		brain = new mutant_brain()
 		brain.Insert(C, TRUE, TRUE)
+
+	if(butt && (!should_have_butt || replace_current))
+		butt.Remove(C,1)
+		QDEL_NULL(butt)
+	if(should_have_butt && !butt)
+		butt = new mutant_butt()
+		butt.Insert(C)
 
 	if(heart && (!should_have_heart || replace_current))
 		heart.Remove(C,1)
@@ -1292,6 +1302,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 /datum/species/proc/spec_attacked_by(obj/item/I, mob/living/user, obj/item/bodypart/affecting, intent, mob/living/carbon/human/H)
 	// Allows you to put in item-specific reactions based on species
+	if(H.checkbuttinsert(I, user))
+		return 0
 	if(user != H)
 		if(H.check_shields(I, I.force, "the [I.name]", MELEE_ATTACK, I.armour_penetration))
 			return 0
@@ -1448,6 +1460,11 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		return
 	if(istype(H.loc, /obj/machinery/atmospherics/components/unary/cryo_cell))
 		return
+
+	if(istype(H.loc, /obj/vehicle))
+		var/obj/vehicle/V = H.loc
+		if (V.sealed_cabin)
+			return
 
 	var/loc_temp = H.get_temperature(environment)
 
