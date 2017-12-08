@@ -740,8 +740,8 @@
 
 /client/proc/vampire_spawnglass() //BUT ENOUGH TALK
 	set category = "Vampire"
-	set name = "Conjure Wineglass"
-	set desc = "Conjures a wineglass filled with delicious red from your private supply."
+	set name = "Conjure Wine Glass (5)"
+	set desc = "Conjures a wine glass filled with delicious red from your private supply."
 
 	var/datum/mind/M = usr.mind
 	if(!M)
