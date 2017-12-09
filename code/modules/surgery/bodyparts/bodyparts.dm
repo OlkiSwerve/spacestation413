@@ -39,7 +39,7 @@
 	var/min_broken_damage = 30
 	var/broken_description
 	var/tmp/perma_injury = 0
-	var/damagestatus
+	var/damagestatus = BP_HEALTHY
 	var/list/fracture_sound = list('sound/effects/bonebreak1.ogg','sound/effects/bonebreak2.ogg','sound/effects/bonebreak3.ogg','sound/effects/bonebreak4.ogg')
 
 	var/px_x = 0
@@ -47,6 +47,8 @@
 
 	var/species_flags_list = list()
 	var/dmg_overlay_type //the type of damage overlay (if any) to use when this bodypart is bruised/burned.
+
+	var/can_grasp = 0 //Can this organ actually grasp something?
 
 /obj/item/bodypart/examine(mob/user)
 	..()
@@ -134,6 +136,14 @@
 	if(!can_inflict)
 		return 0
 
+	if (brute_dam > min_broken_damage && status != BODYPART_ROBOTIC && !src.is_broken())
+		message_admins ("Checking to break")
+		log_admin ("Checking to break")
+		src.fracture()
+
+	if (perma_injury == 0)
+		damagestatus = BP_HEALTHY
+
 	if((brute + burn) < can_inflict)
 		brute_dam	+= brute
 		burn_dam	+= burn
@@ -169,6 +179,12 @@
 
 	brute_dam	= max(brute_dam - brute, 0)
 	burn_dam	= max(burn_dam - burn, 0)
+
+	if (perma_injury > 0)
+		message_admins ("bodypart is injured and cant be healed any higher")
+		log_admin ("bodypart is injured and cant be healed any higher")
+		brute_dam = perma_injury // Can't heal above our injury threshold
+
 	if(owner && updating_health)
 		owner.updatehealth()
 	return update_bodypart_damage_state()
@@ -176,7 +192,7 @@
 
 //Returns total damage...kinda pointless really
 /obj/item/bodypart/proc/get_damage()
-	return brute_dam + burn_dam
+	return max(brute_dam + burn_dam - perma_injury, perma_injury)
 
 
 //Updates an organ's brute/burn states for use by update_damage_overlays()
@@ -192,7 +208,7 @@
 
 
 /obj/item/bodypart/proc/fracture()
-	if(damagestatus & BROKEN)
+	if(damagestatus == BP_BROKEN)
 		return
 
 	to_chat(owner, "<span class='danger'>[pick("You hear a loud cracking sound coming from \the [name].</span>", \
@@ -201,13 +217,15 @@
 	owner.emote("scream")
 
 	playsound(owner.loc, pick(fracture_sound), 50, 1, -2)
-	damagestatus ^= BROKEN
-	broken_description = pick("broken", "fracture", "hairline fracture")
+	damagestatus = BP_BROKEN
 	perma_injury = brute_dam
 
 	//Fractures have a chance of getting you out of restraints
 	if(prob(25))
 		release_restraints()
+
+obj/item/bodypart/proc/is_broken()
+	return (damagestatus == BP_BROKEN)
 
 
 /obj/item/bodypart/proc/release_restraints()
@@ -234,6 +252,7 @@
 		brute_dam = 0
 		brutestate = 0
 		burnstate = 0
+		perma_injury = 0
 
 	if(change_icon_to_default)
 		if(status == BODYPART_ORGANIC)
@@ -403,6 +422,7 @@
 	px_x = 0
 	px_y = 0
 	var/obj/item/cavity_item
+	broken_description = "It hurts when you move it"
 
 /obj/item/bodypart/chest/Destroy()
 	if(cavity_item)
@@ -453,6 +473,7 @@
 	held_index = 1
 	px_x = -6
 	px_y = 0
+	broken_description = "It's twisted at an unnatural angle"
 
 /obj/item/bodypart/l_arm/monkey
 	icon = 'icons/mob/animal_parts.dmi'
@@ -487,6 +508,7 @@
 	held_index = 2
 	px_x = 6
 	px_y = 0
+	broken_description = "It's twisted at an unnatural angle"
 
 /obj/item/bodypart/r_arm/monkey
 	icon = 'icons/mob/animal_parts.dmi'
@@ -520,6 +542,7 @@
 	body_part = LEG_LEFT
 	px_x = -2
 	px_y = 12
+	broken_description = "It's twisted at an unnatural angle"
 
 /obj/item/bodypart/l_leg/digitigrade
 	name = "left digitigrade leg"
@@ -558,6 +581,7 @@
 	body_part = LEG_RIGHT
 	px_x = 2
 	px_y = 12
+	broken_description = "It's twisted at an unnatural angle"
 
 /obj/item/bodypart/r_leg/digitigrade
 	name = "right digitigrade leg"
