@@ -76,9 +76,9 @@
 	. = 0
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/affecting = X
-		if(affecting.body_part == LEG_RIGHT && affecting.damagestatus == BP_HEALTHY)
+		if(affecting.body_part == LEG_RIGHT)
 			.++
-		if(affecting.body_part == LEG_LEFT && affecting.damagestatus == BP_HEALTHY)
+		if(affecting.body_part == LEG_LEFT)
 			.++
 
 //sometimes we want to ignore that we don't have the required amount of legs.

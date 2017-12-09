@@ -137,8 +137,6 @@
 		return 0
 
 	if (brute_dam > min_broken_damage && status != BODYPART_ROBOTIC && !src.is_broken())
-		message_admins ("Checking to break")
-		log_admin ("Checking to break")
 		src.fracture()
 
 	if (perma_injury == 0)
@@ -181,8 +179,6 @@
 	burn_dam	= max(burn_dam - burn, 0)
 
 	if (perma_injury > 0)
-		message_admins ("bodypart is injured and cant be healed any higher")
-		log_admin ("bodypart is injured and cant be healed any higher")
 		brute_dam = perma_injury // Can't heal above our injury threshold
 
 	if(owner && updating_health)

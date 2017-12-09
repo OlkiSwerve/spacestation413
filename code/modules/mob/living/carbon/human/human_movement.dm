@@ -1,5 +1,9 @@
 /mob/living/carbon/human/movement_delay()
 	. = 0
+
+
+
+
 	var/static/config_human_delay
 	if(isnull(config_human_delay))
 		config_human_delay = CONFIG_GET(number/human_delay)
