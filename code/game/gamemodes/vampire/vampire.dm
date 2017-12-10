@@ -11,7 +11,7 @@
 	config_tag = "vampire"
 	restricted_jobs = list("AI", "Cyborg", "Mobile MMI", "Security Officer", "Warden", "Detective", "Head of Security", "Captain", "Chaplain") //Consistent screening has filtered all infiltration attempts on high value jobs
 	protected_jobs = list()
-	required_players = 1
+	required_players = 5
 	var/required_players_secret = 10
 	required_enemies = 1
 	recommended_enemies = 4
