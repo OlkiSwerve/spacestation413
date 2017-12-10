@@ -256,7 +256,7 @@
 /obj/item/bonesetter/bone_mender
 	name = "bone mender"
 	desc = "A favorite among skeletons. It even sounds like a skeleton too."
-	icon = 'icons/obj/surgery.dmi'
+	icon = 'icons/obj/surgery2.dmi'
 	icon_state = "bone-mender"
 	lefthand_file = 'icons/mob/inhands/surgery_tools_left.dmi'
 	righthand_file = 'icons/mob/inhands/surgery_tools_right.dmi'
