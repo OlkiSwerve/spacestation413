@@ -13,6 +13,10 @@
 	//Eye colour
 	var/eye_color = "000"
 
+	var/troll_caste = "burgundy"
+
+	var/troll_horn = "Nubby"
+
 	var/skin_tone = "caucasian1"	//Skin tone
 
 	var/lip_style = null	//no lipstick by default- arguably misleading, as it could be used for general makeup
@@ -48,3 +52,5 @@
 
 	var/creamed = FALSE //to use with creampie overlays
 	var/static/list/can_ride_typecache = typecacheof(list(/mob/living/carbon/human, /mob/living/simple_animal/slime, /mob/living/simple_animal/parrot))
+
+	var/stepcounter = 0
