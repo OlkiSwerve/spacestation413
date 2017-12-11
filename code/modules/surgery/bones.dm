@@ -54,7 +54,7 @@
 
 /datum/surgery_step/glue_bone/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	user.visible_message("[user] starts applying medication to the damaged bones in [target]'s [parse_zone(target_zone)] with \the [tool].",
-	"<span class='notice'>You begin to clamp bleeders in [target]'s [parse_zone(target_zone)]...</span>")
+	"<span class='notice'>You start applying medication to the damaged bones in [target]'s [parse_zone(target_zone)] with \the [tool].</span>")
 
 /datum/surgery_step/glue_bone/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	user.visible_message("<span class='notice'>[user] applies some [tool] to [target]'s bone in [parse_zone(target_zone)].</span>", \
