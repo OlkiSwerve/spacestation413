@@ -6,13 +6,13 @@
 	name = "Wild Cherry Apeshit Apocalypse Gusher Juice"
 	id = "gushercherry"
 	results = list("gushercherry" = 2)
-	required_reagents = list("cherryjelly" = 1, "gusher" = 1)
+	required_reagents = list("cherryjelly" = 1, "gushertropical" = 1)
 
 /datum/chemical_reaction/gusherstrawberry
 	name = "Schizophrenic Strawberry Slam Gusher Juice"
 	id = "gusherstrawberry"
 	results = list("gusherstrawberry" = 2)
-	required_reagents = list("gusher" = 1, "space_drugs" = 1)
+	required_reagents = list("gushertropical" = 1, "space_drugs" = 1)
 
 /datum/chemical_reaction/gusherblack
 	name = "Bodacious Black Liquid Sorrow Gusher Juice"
@@ -37,4 +37,4 @@
 	name = "Hellacious Blue Phlegm Aneurysm Gusher Juice"
 	id = "gusherphlegm"
 	results = list("gusherphlegm" = 2)
-	required_reagents = list("gusher" = 1, "tricordrazine" = 1)
+	required_reagents = list("gushertropical" = 1, "tricordrazine" = 1)
