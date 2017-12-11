@@ -249,6 +249,7 @@ obj/item/bodypart/proc/is_broken()
 		brutestate = 0
 		burnstate = 0
 		perma_injury = 0
+		damagestatus = BP_HEALTHY
 
 	if(change_icon_to_default)
 		if(status == BODYPART_ORGANIC)
