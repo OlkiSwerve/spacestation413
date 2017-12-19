@@ -193,7 +193,7 @@ FORUMURL http://discord.gg/homestuck
 # WIKIURL http://www.tgstation13.org/wiki
 
 ## Rules address
-RULESURL http://discord.gg/homestuck
+RULESURL https://docs.google.com/document/d/1QNnLm36P4ojRQDs9wxxpCxzzai0m2S714_cxaaUZ15Y/edit?usp=sharing
 
 ## Github address
 GITHUBURL https://www.github.com/recordcrash/spacestation413
